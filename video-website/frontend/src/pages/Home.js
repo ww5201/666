@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Input, Select, Button, Spin, Empty } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { videos } from '../services/auth';
+import { videos as videosAPI } from '../services/auth';
 import VideoCard from '../components/VideoCard';
 
 const { Search } = Input;
 const { Option } = Select;
 
 const Home = () => {
-  const [videos, setVideos] = useState([]);
+  const [videoList, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('');
@@ -38,7 +38,7 @@ const Home = () => {
         ...(category && { category })
       };
       
-      const response = await videos.getAll(params);
+      const response = await videosAPI.getAll(params);
       setVideos(response.videos);
       setTotalVideos(response.total);
       setTotalPages(response.totalPages);
@@ -128,7 +128,7 @@ const Home = () => {
       ) : (
         <>
           <Row gutter={[24, 24]}>
-            {videos.map(video => (
+            {videoList.map(video => (
               <Col xs={24} sm={12} md={8} lg={6} key={video._id}>
                 <VideoCard video={video} />
               </Col>
