@@ -7,155 +7,70 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --primary: #fe2c55;
-            --primary-dark: #e0264c;
-            --bg: #0f0f0f;
-            --bg-card: #1a1a1a;
-            --bg-hover: #252525;
-            --text: #fff;
-            --text-secondary: #aaa;
-            --border: #333;
-            --success: #00c853;
+            --primary: #fe2c55; --primary-dark: #e0264c;
+            --bg: #0f0f0f; --bg-card: #1a1a1a; --bg-hover: #252525;
+            --text: #fff; --text-sec: #aaa; --border: #333; --success: #00c853;
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        /* Header */
-        .header {
-            position: fixed; top: 0; left: 0; right: 0; height: 60px;
-            background: rgba(15,15,15,0.95); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            display: flex; align-items: center; padding: 0 24px; z-index: 1000;
-        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+        .header { position: fixed; top: 0; left: 0; right: 0; height: 60px; background: rgba(15,15,15,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 24px; z-index: 1000; }
         .logo { font-size: 24px; font-weight: bold; color: var(--primary); cursor: pointer; display: flex; align-items: center; gap: 8px; }
         .search-bar { flex: 1; max-width: 500px; margin: 0 24px; display: flex; }
-        .search-bar input {
-            flex: 1; height: 40px; background: var(--bg-card);
-            border: 1px solid var(--border); border-radius: 20px 0 0 20px;
-            padding: 0 16px; color: var(--text); font-size: 14px; outline: none;
-        }
+        .search-bar input { flex: 1; height: 40px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px 0 0 20px; padding: 0 16px; color: var(--text); font-size: 14px; outline: none; }
         .search-bar input:focus { border-color: var(--primary); }
-        .search-bar button {
-            width: 60px; height: 40px; background: var(--bg-hover);
-            border: 1px solid var(--border); border-left: none;
-            border-radius: 0 20px 20px 0; color: var(--text); cursor: pointer; font-size: 18px;
-        }
+        .search-bar button { width: 60px; height: 40px; background: var(--bg-hover); border: 1px solid var(--border); border-left: none; border-radius: 0 20px 20px 0; color: var(--text); cursor: pointer; font-size: 18px; }
         .search-bar button:hover { background: var(--primary); }
         .header-actions { display: flex; gap: 12px; margin-left: auto; }
-        .btn {
-            padding: 8px 20px; border-radius: 20px; border: none;
-            cursor: pointer; font-size: 14px; font-weight: 600;
-            transition: all 0.2s; display: flex; align-items: center; gap: 6px;
-        }
+        .btn { padding: 8px 20px; border-radius: 20px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-dark); transform: scale(1.02); }
         .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
         .btn-outline:hover { border-color: var(--text); }
-        /* Sidebar */
-        .sidebar {
-            position: fixed; left: 0; top: 60px; bottom: 0; width: 220px;
-            background: var(--bg); border-right: 1px solid var(--border);
-            padding: 16px 0; overflow-y: auto; z-index: 900;
-        }
-        .sidebar-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 24px; cursor: pointer; transition: background 0.2s;
-            color: var(--text-secondary); font-size: 15px;
-        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .sidebar { position: fixed; left: 0; top: 60px; bottom: 0; width: 220px; background: var(--bg); border-right: 1px solid var(--border); padding: 16px 0; overflow-y: auto; z-index: 900; }
+        .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 24px; cursor: pointer; transition: background 0.2s; color: var(--text-sec); font-size: 15px; }
         .sidebar-item:hover, .sidebar-item.active { background: var(--bg-hover); color: var(--text); }
         .sidebar-item.active { color: var(--primary); font-weight: 600; }
         .sidebar-item .icon { font-size: 20px; width: 24px; text-align: center; }
         .sidebar-divider { height: 1px; background: var(--border); margin: 12px 0; }
-        .sidebar-title { padding: 8px 24px; font-size: 13px; color: var(--text-secondary); text-transform: uppercase; }
-        /* Main */
+        .sidebar-title { padding: 8px 24px; font-size: 13px; color: var(--text-sec); text-transform: uppercase; }
         .main { margin-left: 220px; margin-top: 60px; padding: 24px; min-height: calc(100vh - 60px); }
-        /* Category Bar */
         .category-bar { display: flex; gap: 10px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
         .category-bar::-webkit-scrollbar { display: none; }
-        .category-chip {
-            padding: 8px 18px; background: var(--bg-card); border-radius: 20px;
-            cursor: pointer; white-space: nowrap; font-size: 14px;
-            transition: all 0.2s; border: 1px solid var(--border);
-        }
+        .category-chip { padding: 8px 18px; background: var(--bg-card); border-radius: 20px; cursor: pointer; white-space: nowrap; font-size: 14px; transition: all 0.2s; border: 1px solid var(--border); }
         .category-chip:hover, .category-chip.active { background: var(--primary); border-color: var(--primary); }
-        /* Video Grid */
         .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .video-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.2s; }
         .video-card:hover { transform: translateY(-4px); }
         .video-thumbnail { position: relative; width: 100%; padding-top: 56.25%; background: #000; overflow: hidden; }
-        .video-thumbnail img, .video-thumbnail video {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
-        }
-        .video-thumbnail .duration {
-            position: absolute; bottom: 8px; right: 8px;
-            background: rgba(0,0,0,0.8); color: white;
-            padding: 2px 6px; border-radius: 4px; font-size: 12px;
-        }
-        .video-thumbnail .play-overlay {
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.2s;
-        }
+        .video-thumbnail img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .video-thumbnail .duration { position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.8); color: white; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+        .video-thumbnail .play-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.2s; }
         .video-card:hover .play-overlay { opacity: 1; }
-        .play-overlay .play-icon {
-            width: 50px; height: 50px; background: var(--primary);
-            border-radius: 50%; display: flex; align-items: center;
-            justify-content: center; font-size: 24px;
-        }
+        .play-overlay .play-icon { width: 50px; height: 50px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
         .video-info { padding: 12px 16px; }
-        .video-title {
-            font-size: 15px; font-weight: 600; line-height: 1.4;
-            display: -webkit-box; -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical; overflow: hidden;
-        }
-        .video-meta { display: flex; gap: 12px; margin-top: 8px; font-size: 13px; color: var(--text-secondary); }
-        .video-category-tag {
-            display: inline-block; padding: 2px 8px;
-            background: rgba(254,44,85,0.15); color: var(--primary);
-            border-radius: 4px; font-size: 12px; margin-top: 6px;
-        }
-        /* Modal */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7); z-index: 2000;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
+        .video-title { font-size: 15px; font-weight: 600; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .video-meta { display: flex; gap: 12px; margin-top: 8px; font-size: 13px; color: var(--text-sec); }
+        .video-category-tag { display: inline-block; padding: 2px 8px; background: rgba(254,44,85,0.15); color: var(--primary); border-radius: 4px; font-size: 12px; margin-top: 6px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .modal-overlay.show { opacity: 1; pointer-events: all; }
-        .modal {
-            background: var(--bg-card); border-radius: 16px;
-            width: 90%; max-width: 600px; max-height: 90vh;
-            overflow-y: auto; padding: 32px;
-        }
+        .modal { background: var(--bg-card); border-radius: 16px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; padding: 32px; }
         .modal h2 { font-size: 22px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
-        .modal h2 .close-modal { margin-left: auto; background: none; border: none; color: var(--text-secondary); font-size: 28px; cursor: pointer; }
+        .modal h2 .close-modal { margin-left: auto; background: none; border: none; color: var(--text-sec); font-size: 28px; cursor: pointer; }
         .modal h2 .close-modal:hover { color: var(--text); }
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary); }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 12px 16px; background: var(--bg);
-            border: 1px solid var(--border); border-radius: 8px;
-            color: var(--text); font-size: 14px; outline: none;
-        }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-sec); }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 14px; outline: none; }
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); }
         .form-group textarea { resize: vertical; min-height: 80px; }
-        .upload-zone {
-            border: 2px dashed var(--border); border-radius: 12px;
-            padding: 40px; text-align: center; cursor: pointer; transition: border-color 0.2s;
-        }
+        .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
         .upload-zone:hover, .upload-zone.dragover { border-color: var(--primary); }
         .upload-zone .icon { font-size: 48px; margin-bottom: 12px; }
-        .upload-zone p { color: var(--text-secondary); }
+        .upload-zone p { color: var(--text-sec); }
         .upload-zone .file-info { margin-top: 12px; padding: 10px; background: var(--bg); border-radius: 8px; font-size: 13px; }
         .upload-progress { display: none; margin-top: 16px; }
         .progress-bar { height: 6px; background: var(--bg); border-radius: 3px; overflow: hidden; }
         .progress-bar .fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 0.3s; width: 0%; }
-        .progress-text { text-align: center; margin-top: 8px; font-size: 13px; color: var(--text-secondary); }
-        /* Player */
+        .progress-text { text-align: center; margin-top: 8px; font-size: 13px; color: var(--text-sec); }
         .player-page { display: none; }
         .player-page.show { display: block; }
         .player-container { max-width: 1000px; margin: 0 auto; }
@@ -163,32 +78,32 @@
         .player-video video { width: 100%; height: 100%; }
         .player-info { padding: 20px 0; }
         .player-title { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
-        .player-meta { display: flex; gap: 16px; color: var(--text-secondary); font-size: 14px; margin-bottom: 16px; flex-wrap: wrap; }
-        .player-desc { padding: 16px; background: var(--bg-card); border-radius: 12px; line-height: 1.6; color: var(--text-secondary); }
-        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); cursor: pointer; margin-bottom: 16px; font-size: 14px; }
+        .player-meta { display: flex; gap: 16px; color: var(--text-sec); font-size: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+        .player-desc { padding: 16px; background: var(--bg-card); border-radius: 12px; line-height: 1.6; color: var(--text-sec); }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--text-sec); cursor: pointer; margin-bottom: 16px; font-size: 14px; }
         .back-btn:hover { color: var(--text); }
         .player-actions { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
         .player-actions .btn { font-size: 13px; padding: 8px 16px; }
-        /* Empty State */
         .empty-state { text-align: center; padding: 80px 20px; }
         .empty-state .icon { font-size: 64px; margin-bottom: 16px; }
         .empty-state h3 { font-size: 20px; margin-bottom: 8px; }
-        .empty-state p { color: var(--text-secondary); margin-bottom: 20px; }
-        /* Stats */
+        .empty-state p { color: var(--text-sec); margin-bottom: 20px; }
         .stats-bar { display: flex; gap: 24px; padding: 16px 0; margin-bottom: 20px; }
-        .stat-item { font-size: 14px; color: var(--text-secondary); }
+        .stat-item { font-size: 14px; color: var(--text-sec); }
         .stat-item strong { color: var(--text); font-size: 20px; }
-        /* Toast */
+        .status-bar { padding: 8px 16px; background: var(--bg-card); border-radius: 8px; margin-bottom: 16px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+        .status-bar.online { border: 1px solid var(--success); color: var(--success); }
+        .status-bar.offline { border: 1px solid var(--primary); color: var(--primary); }
+        .status-bar .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-bar.online .dot { background: var(--success); }
+        .status-bar.offline .dot { background: var(--primary); }
         .toast-container { position: fixed; top: 80px; right: 24px; z-index: 3000; display: flex; flex-direction: column; gap: 8px; }
-        .toast {
-            padding: 12px 20px; background: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 8px; font-size: 14px; animation: slideIn 0.3s;
-            display: flex; align-items: center; gap: 8px;
-        }
+        .toast { padding: 12px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; font-size: 14px; animation: slideIn 0.3s; display: flex; align-items: center; gap: 8px; }
         .toast.success { border-color: var(--success); }
         .toast.error { border-color: var(--primary); }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        /* Responsive */
+        .loading-spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .main { margin-left: 0; }
@@ -200,7 +115,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <div class="header">
         <div class="logo" onclick="showHome()">🎬 <span>视频网站</span></div>
         <div class="search-bar">
@@ -212,14 +126,9 @@
         </div>
     </div>
 
-    <!-- Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-item active" onclick="showHome();filterCategory('')" data-page="home">
-            <span class="icon">🏠</span> 推荐
-        </div>
-        <div class="sidebar-item" onclick="filterCategory('')">
-            <span class="icon">📺</span> 全部视频
-        </div>
+        <div class="sidebar-item active" onclick="filterCategory('')"><span class="icon">🏠</span> 推荐</div>
+        <div class="sidebar-item" onclick="filterCategory('')"><span class="icon">📺</span> 全部视频</div>
         <div class="sidebar-divider"></div>
         <div class="sidebar-title">分类</div>
         <div class="sidebar-item" onclick="filterCategory('娱乐')"><span class="icon">😄</span> 娱乐</div>
@@ -229,16 +138,14 @@
         <div class="sidebar-item" onclick="filterCategory('教育')"><span class="icon">📚</span> 教育</div>
         <div class="sidebar-item" onclick="filterCategory('生活')"><span class="icon">🌟</span> 生活</div>
         <div class="sidebar-item" onclick="filterCategory('其他')"><span class="icon">📌</span> 其他</div>
-        <div class="sidebar-divider"></div>
-        <div class="sidebar-title">管理</div>
-        <div class="sidebar-item" onclick="showMyVideos()"><span class="icon">📁</span> 我的视频</div>
-        <div class="sidebar-item" onclick="clearAllVideos()"><span class="icon">🗑️</span> 清空全部</div>
     </div>
 
-    <!-- Main Content -->
     <div class="main">
-        <!-- Home Page -->
         <div id="homePage">
+            <div class="status-bar" id="connStatus">
+                <span class="dot"></span>
+                <span>连接中...</span>
+            </div>
             <div class="category-bar">
                 <div class="category-chip active" onclick="filterCategory('')">全部</div>
                 <div class="category-chip" onclick="filterCategory('娱乐')">😄 娱乐</div>
@@ -258,18 +165,15 @@
             <div id="emptyState" class="empty-state" style="display:none">
                 <div class="icon">🎬</div>
                 <h3>还没有视频</h3>
-                <p>上传您的第一个视频，开始创作之旅</p>
+                <p>上传您的第一个视频，所有设备都能看到</p>
                 <button class="btn btn-primary" onclick="openUpload()">📤 上传视频</button>
             </div>
         </div>
 
-        <!-- Player Page -->
         <div id="playerPage" class="player-page">
             <div class="player-container">
                 <div class="back-btn" onclick="showHome()">← 返回</div>
-                <div class="player-video">
-                    <video id="videoPlayer" controls></video>
-                </div>
+                <div class="player-video"><video id="videoPlayer" controls></video></div>
                 <div class="player-info">
                     <h1 class="player-title" id="playerTitle"></h1>
                     <div class="player-meta">
@@ -280,8 +184,7 @@
                     </div>
                     <div class="player-actions">
                         <button class="btn btn-outline" onclick="likeCurrentVideo()">👍 赞</button>
-                        <button class="btn btn-outline" onclick="downloadCurrentVideo()">⬇️ 下载</button>
-                        <button class="btn btn-outline" style="border-color:var(--primary);color:var(--primary)" onclick="deleteCurrentVideo()">🗑️ 删除</button>
+                        <button class="btn btn-outline" onclick="deleteCurrentVideo()" style="border-color:var(--primary);color:var(--primary)">🗑️ 删除</button>
                     </div>
                     <div class="player-desc" id="playerDesc"></div>
                 </div>
@@ -289,14 +192,13 @@
         </div>
     </div>
 
-    <!-- Upload Modal -->
     <div class="modal-overlay" id="uploadModal">
         <div class="modal">
             <h2>📤 上传视频 <button class="close-modal" onclick="closeUpload()">&times;</button></h2>
             <div class="upload-zone" id="uploadZone" onclick="document.getElementById('videoFile').click()">
                 <div class="icon">📁</div>
                 <p>点击或拖拽视频文件到这里</p>
-                <p style="font-size:12px;margin-top:8px">支持 MP4、WebM、OGG 等视频格式</p>
+                <p style="font-size:12px;margin-top:8px">支持 MP4、WebM、OGG 格式 · 最大 500MB</p>
                 <div class="file-info" id="fileInfo" style="display:none"></div>
                 <input type="file" id="videoFile" accept="video/*" style="display:none" onchange="handleFileSelect(this)">
             </div>
@@ -324,71 +226,23 @@
                     <option value="其他">📌 其他</option>
                 </select>
             </div>
-            <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px" onclick="uploadVideo()">🚀 发布视频</button>
+            <button class="btn btn-primary" id="uploadBtn" style="width:100%;justify-content:center;padding:14px" onclick="uploadVideo()">🚀 发布视频</button>
         </div>
     </div>
 
-    <!-- Toast -->
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-    // ==================== IndexedDB ====================
-    const DB_NAME = 'VideoWebsiteDB';
-    const DB_VERSION = 1;
-    const STORE_NAME = 'videos';
-    let db = null;
+    // ==================== 配置 ====================
+    const API_BASE = '/api';
+
+    let allVideos = [];
+    let currentCategory = '';
+    let currentSearch = '';
     let currentVideoId = null;
+    let selectedFile = null;
 
-    function openDB() {
-        return new Promise((resolve, reject) => {
-            const req = indexedDB.open(DB_NAME, DB_VERSION);
-            req.onerror = () => reject(req.error);
-            req.onsuccess = () => { db = req.result; resolve(db); };
-            req.onupgradeneeded = (e) => {
-                const d = e.target.result;
-                if (!d.objectStoreNames.contains(STORE_NAME)) {
-                    const s = d.createObjectStore(STORE_NAME, { keyPath: 'id' });
-                    s.createIndex('category', 'category', { unique: false });
-                    s.createIndex('uploadDate', 'uploadDate', { unique: false });
-                }
-            };
-        });
-    }
-    function dbGetAll() {
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(STORE_NAME, 'readonly');
-            const req = tx.objectStore(STORE_NAME).getAll();
-            req.onsuccess = () => resolve(req.result);
-            req.onerror = () => reject(req.error);
-        });
-    }
-    function dbPut(video) {
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(STORE_NAME, 'readwrite');
-            const req = tx.objectStore(STORE_NAME).put(video);
-            req.onsuccess = () => resolve(req.result);
-            req.onerror = () => reject(req.error);
-        });
-    }
-    function dbDelete(id) {
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(STORE_NAME, 'readwrite');
-            const req = tx.objectStore(STORE_NAME).delete(id);
-            req.onsuccess = () => resolve();
-            req.onerror = () => reject(req.error);
-        });
-    }
-    function dbClear() {
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction(STORE_NAME, 'readwrite');
-            const req = tx.objectStore(STORE_NAME).clear();
-            req.onsuccess = () => resolve();
-            req.onerror = () => reject(req.error);
-        });
-    }
-
-    // ==================== 工具 ====================
-    function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2, 9); }
+    // ==================== 工具函数 ====================
     function formatDuration(s) {
         if (!s || isNaN(s)) return '00:00';
         const h = Math.floor(s/3600), m = Math.floor((s%3600)/60), sec = Math.floor(s%60);
@@ -396,6 +250,7 @@
         return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
     }
     function formatSize(b) {
+        if (!b) return '0 B';
         if (b < 1024) return b+' B';
         if (b < 1048576) return (b/1024).toFixed(1)+' KB';
         if (b < 1073741824) return (b/1048576).toFixed(1)+' MB';
@@ -409,6 +264,7 @@
         if (diff < 2592000000) return Math.floor(diff/86400000)+' 天前';
         return date.toLocaleDateString('zh-CN');
     }
+    function getCategoryIcon(c) { return {'娱乐':'😄','科技':'💻','音乐':'🎵','游戏':'🎮','教育':'📚','生活':'🌟','其他':'📌'}[c]||'📌'; }
     function showToast(msg, type='success') {
         const c = document.getElementById('toastContainer');
         const t = document.createElement('div');
@@ -416,9 +272,6 @@
         t.innerHTML = (type==='success'?'✅':'❌') + ' ' + msg;
         c.appendChild(t);
         setTimeout(() => t.remove(), 3000);
-    }
-    function getCategoryIcon(c) {
-        return {'娱乐':'😄','科技':'💻','音乐':'🎵','游戏':'🎮','教育':'📚','生活':'🌟','其他':'📌'}[c] || '📌';
     }
 
     // ==================== 缩略图 ====================
@@ -431,10 +284,11 @@
             v.onseeked = () => {
                 const c = document.createElement('canvas');
                 c.width = 320; c.height = 180;
-                c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
-                const thumb = c.toDataURL('image/jpeg', 0.7);
-                URL.revokeObjectURL(v.src);
-                resolve(thumb);
+                c.getContext('2d').drawImage(v, 0, 0, 320, 180);
+                c.toBlob(blob => {
+                    URL.revokeObjectURL(v.src);
+                    resolve(blob);
+                }, 'image/jpeg', 0.7);
             };
             v.onerror = () => { URL.revokeObjectURL(v.src); resolve(null); };
             setTimeout(() => { URL.revokeObjectURL(v.src); resolve(null); }, 5000);
@@ -449,8 +303,74 @@
         });
     }
 
+    // ==================== API 操作 ====================
+    async function loadVideos() {
+        try {
+            const params = new URLSearchParams();
+            if (currentCategory) params.set('category', currentCategory);
+            if (currentSearch) params.set('search', currentSearch);
+
+            const res = await fetch(`${API_BASE}/videos?${params}`);
+            const data = await res.json();
+            allVideos = data.videos || [];
+
+            renderVideos();
+            updateStats();
+            updateStatus(true);
+        } catch (e) {
+            console.error('Load error:', e);
+            updateStatus(false);
+        }
+    }
+
+    function renderVideos() {
+        const grid = document.getElementById('videoGrid');
+        const empty = document.getElementById('emptyState');
+        if (allVideos.length === 0) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+        empty.style.display = 'none';
+        grid.innerHTML = allVideos.map(v => {
+            const thumb = v.thumbnailUrl || '';
+            return `<div class="video-card" onclick="playVideo('${v._id}')">
+                <div class="video-thumbnail">
+                    ${thumb ? '<img src="'+thumb+'" loading="lazy">' : '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a1a;font-size:48px">🎬</div>'}
+                    <span class="duration">${formatDuration(v.duration)}</span>
+                    <div class="play-overlay"><div class="play-icon">▶</div></div>
+                </div>
+                <div class="video-info">
+                    <div class="video-title">${v.title}</div>
+                    <div class="video-meta">
+                        <span>👁️ ${v.views||0}</span><span>👍 ${v.likes||0}</span><span>${formatDate(v.createdAt)}</span>
+                    </div>
+                    <div class="video-category-tag">${getCategoryIcon(v.category)} ${v.category}</div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function updateStats() {
+        document.getElementById('totalVideos').textContent = allVideos.length;
+        const dur = allVideos.reduce((s,v) => s+(v.duration||0), 0);
+        document.getElementById('totalDuration').textContent = dur > 3600 ? (dur/3600).toFixed(1)+'小时' : Math.round(dur/60)+'分钟';
+        document.getElementById('totalSize').textContent = formatSize(allVideos.reduce((s,v) => s+(v.fileSize||0), 0));
+    }
+
+    function updateStatus(online) {
+        const el = document.getElementById('connStatus');
+        el.className = 'status-bar ' + (online ? 'online' : 'offline');
+        el.innerHTML = '<span class="dot"></span><span>' + (online ? '☁️ 服务器已连接 · 所有设备共享' : '⚠️ 服务器连接失败') + '</span>';
+    }
+
+    function filterCategory(cat) {
+        currentCategory = cat;
+        document.querySelectorAll('.category-chip').forEach(c => c.classList.toggle('active', c.textContent.includes(cat) || (!cat && c.textContent==='全部')));
+        document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+        loadVideos();
+        showHome();
+    }
+
+    function searchVideos() { currentSearch = document.getElementById('searchInput').value.trim(); loadVideos(); showHome(); }
+
     // ==================== 上传 ====================
-    let selectedFile = null;
     function openUpload() {
         document.getElementById('uploadModal').classList.add('show');
         selectedFile = null;
@@ -465,8 +385,7 @@
     function handleFileSelect(input) {
         const file = input.files[0];
         if (!file) return;
-        if (!file.type.startsWith('video/')) { showToast('请选择视频文件（MP4/WebM/OGG）', 'error'); return; }
-        // 500MB 限制
+        if (!file.type.startsWith('video/')) { showToast('请选择视频文件', 'error'); input.value = ''; return; }
         if (file.size > 500 * 1024 * 1024) { showToast('视频文件不能超过500MB', 'error'); input.value = ''; return; }
         selectedFile = file;
         const info = document.getElementById('fileInfo');
@@ -485,6 +404,7 @@
         e.preventDefault(); uploadZone.classList.remove('dragover');
         const file = e.dataTransfer.files[0];
         if (file && file.type.startsWith('video/')) {
+            if (file.size > 500 * 1024 * 1024) { showToast('视频文件不能超过500MB', 'error'); return; }
             selectedFile = file;
             const info = document.getElementById('fileInfo');
             info.style.display = 'block';
@@ -500,9 +420,9 @@
         const title = document.getElementById('videoTitle').value.trim();
         if (!title) { showToast('请输入视频标题', 'error'); return; }
 
-        const btn = document.querySelector('.modal .btn-primary');
+        const btn = document.getElementById('uploadBtn');
         const origText = btn.innerHTML;
-        btn.innerHTML = '⏳ 处理中...'; btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner"></span> 上传中...'; btn.disabled = true;
 
         const pDiv = document.getElementById('uploadProgress');
         const pFill = document.getElementById('progressFill');
@@ -513,163 +433,98 @@
             pText.textContent = '生成缩略图...'; pFill.style.width = '10%';
             const thumbnail = await generateThumbnail(selectedFile);
 
-            pText.textContent = '获取视频时长...'; pFill.style.width = '25%';
+            pText.textContent = '获取视频时长...'; pFill.style.width = '20%';
             const duration = await getVideoDuration(selectedFile);
 
-            pText.textContent = '读取视频数据（' + formatSize(selectedFile.size) + '）...'; pFill.style.width = '40%';
-            const arrayBuffer = await selectedFile.arrayBuffer();
+            pText.textContent = '上传视频到服务器...'; pFill.style.width = '40%';
+            const formData = new FormData();
+            formData.append('video', selectedFile);
+            formData.append('title', title);
+            formData.append('description', document.getElementById('videoDesc').value.trim());
+            formData.append('category', document.getElementById('videoCategory').value);
+            formData.append('duration', duration);
+            if (thumbnail) formData.append('thumbnail', thumbnail, 'thumb.jpg');
 
-            pText.textContent = '写入本地数据库...'; pFill.style.width = '70%';
-            const video = {
-                id: generateId(), title: title,
-                description: document.getElementById('videoDesc').value.trim(),
-                category: document.getElementById('videoCategory').value,
-                fileName: selectedFile.name, fileSize: selectedFile.size,
-                fileType: selectedFile.type, duration: duration,
-                thumbnail: thumbnail, data: arrayBuffer,
-                views: 0, likes: 0, uploadDate: new Date().toISOString()
-            };
-            await dbPut(video);
+            pText.textContent = '保存中...'; pFill.style.width = '80%';
+            const res = await fetch(`${API_BASE}/videos`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                throw new Error(err.error || '上传失败');
+            }
 
             pFill.style.width = '100%'; pText.textContent = '✅ 发布成功！';
-            showToast('🎉 视频发布成功！');
+            showToast('🎉 视频发布成功！所有设备可见');
             setTimeout(() => { closeUpload(); loadVideos(); }, 800);
         } catch (err) {
             console.error('Upload error:', err);
-            let msg = '上传失败';
-            if (err.name === 'QuotaExceededError') {
-                msg = '存储空间不足，请删除一些视频后重试';
-            } else if (err.message) {
-                msg = '上传失败: ' + err.message;
-            }
-            showToast(msg, 'error');
+            showToast('上传失败: ' + err.message, 'error');
             pDiv.style.display = 'none';
         } finally {
             btn.innerHTML = origText; btn.disabled = false;
         }
     }
 
-    // ==================== 视频列表 ====================
-    let allVideos = [];
-    let currentCategory = '';
-    let currentSearch = '';
-
-    async function loadVideos() {
-        allVideos = await dbGetAll();
-        allVideos.sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
-        renderVideos(); updateStats();
-    }
-
-    function renderVideos() {
-        let filtered = allVideos;
-        if (currentCategory) filtered = filtered.filter(v => v.category === currentCategory);
-        if (currentSearch) {
-            const q = currentSearch.toLowerCase();
-            filtered = filtered.filter(v => v.title.toLowerCase().includes(q) || (v.description && v.description.toLowerCase().includes(q)));
-        }
-        const grid = document.getElementById('videoGrid');
-        const empty = document.getElementById('emptyState');
-        if (filtered.length === 0) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
-        empty.style.display = 'none';
-        grid.innerHTML = filtered.map(v => `
-            <div class="video-card" onclick="playVideo('${v.id}')">
-                <div class="video-thumbnail">
-                    ${v.thumbnail ? '<img src="'+v.thumbnail+'" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover">' : '<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a1a;font-size:48px">🎬</div>'}
-                    <span class="duration">${formatDuration(v.duration)}</span>
-                    <div class="play-overlay"><div class="play-icon">▶</div></div>
-                </div>
-                <div class="video-info">
-                    <div class="video-title">${v.title}</div>
-                    <div class="video-meta">
-                        <span>👁️ ${v.views||0}</span><span>👍 ${v.likes||0}</span><span>${formatDate(v.uploadDate)}</span>
-                    </div>
-                    <div class="video-category-tag">${getCategoryIcon(v.category)} ${v.category}</div>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function updateStats() {
-        document.getElementById('totalVideos').textContent = allVideos.length;
-        const dur = allVideos.reduce((s,v) => s+(v.duration||0), 0);
-        document.getElementById('totalDuration').textContent = dur > 3600 ? (dur/3600).toFixed(1)+'小时' : Math.round(dur/60)+'分钟';
-        document.getElementById('totalSize').textContent = formatSize(allVideos.reduce((s,v) => s+(v.fileSize||0), 0));
-    }
-
-    function filterCategory(cat) {
-        currentCategory = cat;
-        document.querySelectorAll('.category-chip').forEach(c => c.classList.toggle('active', c.textContent.includes(cat) || (!cat && c.textContent==='全部')));
-        document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
-        renderVideos(); showHome();
-    }
-
-    function searchVideos() { currentSearch = document.getElementById('searchInput').value.trim(); renderVideos(); showHome(); }
-    function showMyVideos() { currentCategory=''; currentSearch=''; document.getElementById('searchInput').value=''; renderVideos(); showHome(); }
-
     // ==================== 播放 ====================
     async function playVideo(id) {
-        const video = allVideos.find(v => v.id === id);
-        if (!video) return;
-        currentVideoId = id;
-        video.views = (video.views||0) + 1;
-        await dbPut(video);
-        const blob = new Blob([video.data], { type: video.fileType });
-        const url = URL.createObjectURL(blob);
-        const player = document.getElementById('videoPlayer');
-        player.src = url; player.load();
-        document.getElementById('playerTitle').textContent = video.title;
-        document.getElementById('playerViews').textContent = video.views + ' 次播放';
-        document.getElementById('playerDate').textContent = formatDate(video.uploadDate);
-        document.getElementById('playerCategory').textContent = getCategoryIcon(video.category) + ' ' + video.category;
-        document.getElementById('playerSize').textContent = formatSize(video.fileSize);
-        document.getElementById('playerDesc').textContent = video.description || '暂无描述';
-        document.getElementById('homePage').style.display = 'none';
-        document.getElementById('playerPage').classList.add('show');
-        try { await player.play(); } catch(e) {}
-        player.onended = () => URL.revokeObjectURL(url);
+        try {
+            const res = await fetch(`${API_BASE}/videos/${id}`);
+            const video = await res.json();
+            if (!video || video.error) { showToast('视频不存在', 'error'); return; }
+
+            currentVideoId = id;
+            const player = document.getElementById('videoPlayer');
+            player.src = video.videoUrl;
+            player.load();
+
+            document.getElementById('playerTitle').textContent = video.title;
+            document.getElementById('playerViews').textContent = video.views + ' 次播放';
+            document.getElementById('playerDate').textContent = formatDate(video.createdAt);
+            document.getElementById('playerCategory').textContent = getCategoryIcon(video.category) + ' ' + video.category;
+            document.getElementById('playerSize').textContent = formatSize(video.fileSize);
+            document.getElementById('playerDesc').textContent = video.description || '暂无描述';
+
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('playerPage').classList.add('show');
+            try { await player.play(); } catch(e) {}
+        } catch (e) {
+            showToast('加载视频失败', 'error');
+        }
     }
 
     function showHome() {
         document.getElementById('playerPage').classList.remove('show');
         document.getElementById('homePage').style.display = 'block';
         const p = document.getElementById('videoPlayer');
-        p.pause(); if (p.src) URL.revokeObjectURL(p.src); p.src = '';
+        p.pause(); p.src = '';
         currentVideoId = null;
     }
 
     async function likeCurrentVideo() {
         if (!currentVideoId) return;
-        const v = allVideos.find(v => v.id === currentVideoId);
-        if (!v) return;
-        v.likes = (v.likes||0) + 1;
-        await dbPut(v); showToast('已点赞 👍'); loadVideos();
-    }
-
-    function downloadCurrentVideo() {
-        if (!currentVideoId) return;
-        const v = allVideos.find(v => v.id === currentVideoId);
-        if (!v) return;
-        const blob = new Blob([v.data], { type: v.fileType });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = v.fileName || 'video.mp4'; a.click();
-        URL.revokeObjectURL(url); showToast('开始下载');
+        try {
+            await fetch(`${API_BASE}/videos/${currentVideoId}/like`, { method: 'POST' });
+            showToast('已点赞 👍');
+            loadVideos();
+        } catch (e) { showToast('操作失败', 'error'); }
     }
 
     async function deleteCurrentVideo() {
         if (!currentVideoId) return;
-        if (!confirm('确定要删除这个视频吗？此操作不可恢复。')) return;
-        await dbDelete(currentVideoId); showToast('视频已删除'); showHome(); loadVideos();
-    }
-
-    async function clearAllVideos() {
-        if (allVideos.length === 0) { showToast('没有视频可删除', 'error'); return; }
-        if (!confirm('确定要删除全部 ' + allVideos.length + ' 个视频吗？此操作不可恢复。')) return;
-        await dbClear(); showToast('已清空所有视频'); loadVideos();
+        if (!confirm('确定要删除这个视频吗？')) return;
+        try {
+            await fetch(`${API_BASE}/videos/${currentVideoId}`, { method: 'DELETE' });
+            showToast('视频已删除');
+            showHome();
+            loadVideos();
+        } catch (e) { showToast('删除失败', 'error'); }
     }
 
     // ==================== 初始化 ====================
-    async function init() { await openDB(); await loadVideos(); }
-    init();
+    loadVideos();
     </script>
 </body>
 </html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频网站 - 配置向导</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #0f0f0f; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .container { background: #1a1a1a; border-radius: 20px; padding: 40px; max-width: 600px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+        h1 { text-align: center; margin-bottom: 8px; font-size: 28px; }
+        .sub { text-align: center; color: #aaa; margin-bottom: 32px; }
+        .step { background: #252525; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .step-num { display: inline-block; width: 28px; height: 28px; background: #fe2c55; border-radius: 50%; text-align: center; line-height: 28px; font-size: 14px; font-weight: bold; margin-right: 10px; }
+        .step h3 { display: inline; font-size: 16px; }
+        .step p { color: #aaa; font-size: 14px; margin-top: 10px; line-height: 1.6; }
+        .step a { color: #fe2c55; text-decoration: none; }
+        .step a:hover { text-decoration: underline; }
+        .step code { background: #0f0f0f; padding: 2px 8px; border-radius: 4px; font-size: 13px; }
+        .form-group { margin-top: 16px; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: 14px; color: #aaa; }
+        .form-group input { width: 100%; padding: 12px 16px; background: #0f0f0f; border: 1px solid #333; border-radius: 8px; color: #fff; font-size: 14px; outline: none; }
+        .form-group input:focus { border-color: #fe2c55; }
+        .form-group input::placeholder { color: #555; }
+        .btn { display: block; width: 100%; padding: 14px; background: #fe2c55; color: #fff; border: none; border-radius: 25px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 24px; transition: all 0.2s; }
+        .btn:hover { background: #e0264c; transform: scale(1.02); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .status { text-align: center; margin-top: 16px; font-size: 14px; }
+        .status.success { color: #00c853; }
+        .status.error { color: #fe2c55; }
+        .skip { text-align: center; margin-top: 20px; }
+        .skip a { color: #aaa; font-size: 13px; text-decoration: none; }
+        .skip a:hover { color: #fff; }
+        .tip { background: #1a2a1a; border: 1px solid #2a4a2a; border-radius: 8px; padding: 12px; margin-top: 12px; font-size: 13px; color: #8f8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 视频网站配置</h1>
+        <p class="sub">只需 2 分钟，配置云端存储</p>
+
+        <div class="step">
+            <span class="step-num">1</span>
+            <h3>注册 Cloudinary</h3>
+            <p>
+                打开 <a href="https://cloudinary.com" target="_blank">cloudinary.com</a>，点击「Sign up for free」<br>
+                用邮箱注册（或 GitHub 登录），注册完成后进入 Dashboard
+            </p>
+        </div>
+
+        <div class="step">
+            <span class="step-num">2</span>
+            <h3>获取 Cloud name</h3>
+            <p>在 Dashboard 首页能看到 <code>Cloud name</code>，复制它</p>
+            <div class="form-group">
+                <label>Cloud name</label>
+                <input type="text" id="cloudName" placeholder="例如：dxxxxxxx">
+            </div>
+        </div>
+
+        <div class="step">
+            <span class="step-num">3</span>
+            <h3>创建 Upload Preset</h3>
+            <p>
+                点击左侧「Settings」→「Upload」→ 往下找到「Upload presets」→「Add upload preset」<br>
+                Preset name 填：<code>video_unsigned</code><br>
+                Signing mode 选：<code>Unsigned</code><br>
+                点击「Save」
+            </p>
+            <div class="form-group">
+                <label>Upload Preset 名称</label>
+                <input type="text" id="uploadPreset" placeholder="video_unsigned" value="video_unsigned">
+            </div>
+            <div class="tip">💡 如果提示需要升级，选择免费计划即可。Unsigned preset 不需要付费。</div>
+        </div>
+
+        <button class="btn" onclick="saveConfig()">✅ 保存配置并进入网站</button>
+        <div class="status" id="status"></div>
+        <div class="skip">
+            <a href="/demo.html">跳过配置，直接使用本地模式 →</a>
+        </div>
+    </div>
+
+    <script>
+    function saveConfig() {
+        const cloudName = document.getElementById('cloudName').value.trim();
+        const uploadPreset = document.getElementById('uploadPreset').value.trim();
+        const status = document.getElementById('status');
+
+        if (!cloudName) {
+            status.className = 'status error';
+            status.textContent = '❌ 请输入 Cloud name';
+            return;
+        }
+        if (!uploadPreset) {
+            status.className = 'status error';
+            status.textContent = '❌ 请输入 Upload Preset 名称';
+            return;
+        }
+
+        // 保存到 localStorage
+        localStorage.setItem('cloudinary_cloud_name', cloudName);
+        localStorage.setItem('cloudinary_upload_preset', uploadPreset);
+
+        status.className = 'status success';
+        status.textContent = '✅ 配置保存成功！正在跳转...';
+
+        setTimeout(() => {
+            window.location.href = '/demo.html';
+        }, 1000);
+    }
+
+    // 自动填充已保存的配置
+    window.addEventListener('load', () => {
+        const cn = localStorage.getItem('cloudinary_cloud_name');
+        const up = localStorage.getItem('cloudinary_upload_preset');
+        if (cn) document.getElementById('cloudName').value = cn;
+        if (up) document.getElementById('uploadPreset').value = up;
+    });
+    </script>
+</body>
+</html>

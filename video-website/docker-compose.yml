@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # 视频网站后端
+  video-backend:
+    image: node:18-alpine
+    container_name: video-backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - ./uploads:/app/uploads
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - MONGODB_URI=mongodb://video-mongo:27017/videodb
+      - UPLOAD_DIR=/app/uploads
+      - MAX_FILE_SIZE=524288000
+    command: ["node", "server.js"]
+    depends_on:
+      - video-mongo
+    restart: unless-stopped
+
+  # MongoDB 数据库
+  video-mongo:
+    image: mongo:6
+    container_name: video-mongo
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27018:27017"
+    restart: unless-stopped
+
+  # Nginx 前端
+  video-nginx:
+    image: nginx:alpine
+    container_name: video-nginx
+    volumes:
+      - ../frontend:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./uploads:/usr/share/nginx/uploads:ro
+    ports:
+      - "83:80"
+    depends_on:
+      - video-backend
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
