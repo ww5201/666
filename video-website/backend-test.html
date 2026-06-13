@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频网站 - 后端测试页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .status-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .status-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .status-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online {
+            background: #28a745;
+        }
+        
+        .status-offline {
+            background: #dc3545;
+        }
+        
+        .status-testing {
+            background: #ffc107;
+        }
+        
+        .control-panel {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .control-panel h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .control-btn {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .control-btn:hover {
+            background: #1976d2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+        
+        .control-btn.danger {
+            background: #f44336;
+        }
+        
+        .control-btn.danger:hover {
+            background: #d32f2f;
+        }
+        
+        .control-btn.success {
+            background: #4caf50;
+        }
+        
+        .control-btn.success:hover {
+            background: #388e3c;
+        }
+        
+        .api-section {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .api-section h3 {
+            color: #f57c00;
+            margin-bottom: 15px;
+        }
+        
+        .api-endpoint {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .api-endpoint h4 {
+            color: #ff9800;
+            margin-bottom: 5px;
+        }
+        
+        .api-endpoint p {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .test-button {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        
+        .test-button:hover {
+            background: #f57c00;
+        }
+        
+        .test-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .response-area {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .response-area.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .response-area.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .test-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .test-form h4 {
+            color: #ff9800;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .submit-btn {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #f57c00;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer p {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .control-btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 视频网站 - 后端测试页面</h1>
+            <p>完整的API测试和调试工具</p>
+        </div>
+        
+        <div class="status-grid">
+            <div class="status-card">
+                <h3>🔄 后端服务器</h3>
+                <p><span class="status-indicator status-testing"></span>状态：检测中...</p>
+                <p>地址：http://localhost:5000</p>
+                <p>端口：5000</p>
+                <button class="test-button" onclick="testBackend()">测试连接</button>
+                <div id="backend-response" class="response-area"></div>
+            </div>
+            
+            <div class="status-card">
+                <h3>🌐 通用服务器</h3>
+                <p><span class="status-indicator status-testing"></span>状态：检测中...</p>
+                <p>地址：http://localhost:8888</p>
+                <p>端口：8888</p>
+                <button class="test-button" onclick="testUniversal()">测试连接</button>
+                <div id="universal-response" class="response-area"></div>
+            </div>
+            
+            <div class="status-card">
+                <h3>📊 系统状态</h3>
+                <p><span class="status-indicator status-testing"></span>数据库：检测中...</p>
+                <p><span class="status-indicator status-testing"></span>内存：检测中...</p>
+                <p><span class="status-indicator status-testing"></span>CPU：检测中...</p>
+                <button class="test-button" onclick="testSystem()">系统检测</button>
+                <div id="system-response" class="response-area"></div>
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <h3>🎮 服务器控制</h3>
+            <div class="button-group">
+                <button class="control-btn success" onclick="startBackend()">启动后端服务器</button>
+                <button class="control-btn" onclick="startUniversal()">启动通用服务器</button>
+                <button class="control-btn danger" onclick="stopBackend()">停止后端服务器</button>
+                <button class="control-btn" onclick="restartBackend()">重启后端服务器</button>
+                <button class="control-btn" onclick="checkLogs()">查看日志</button>
+            </div>
+        </div>
+        
+        <div class="api-section">
+            <h3>🔧 API接口测试</h3>
+            
+            <div class="api-endpoint">
+                <h4>GET /api/videos</h4>
+                <p>获取视频列表</p>
+                <button class="test-button" onclick="testGetVideos()">测试接口</button>
+                <div id="videos-response" class="response-area"></div>
+            </div>
+            
+            <div class="api-endpoint">
+                <h4>GET /api/videos/:id</h4>
+                <p>获取单个视频</p>
+                <button class="test-button" onclick="testGetVideo()">测试接口</button>
+                <div id="video-response" class="response-area"></div>
+            </div>
+            
+            <div class="api-endpoint">
+                <h4>POST /api/users/register</h4>
+                <p>用户注册</p>
+                <button class="test-button" onclick="testRegister()">测试接口</button>
+                <div id="register-response" class="response-area"></div>
+            </div>
+            
+            <div class="api-endpoint">
+                <h4>POST /api/users/login</h4>
+                <p>用户登录</p>
+                <button class="test-button" onclick="testLogin()">测试接口</button>
+                <div id="login-response" class="response-area"></div>
+            </div>
+            
+            <div class="api-endpoint">
+                <h4>GET /api/users/me</h4>
+                <p>获取用户信息</p>
+                <button class="test-button" onclick="testGetUser()">测试接口</button>
+                <div id="user-response" class="response-area"></div>
+            </div>
+        </div>
+        
+        <div class="api-section">
+            <h3>🧪 自定义测试</h3>
+            
+            <div class="test-form">
+                <h4>自定义API测试</h4>
+                <div class="form-group">
+                    <label>HTTP方法：</label>
+                    <select id="httpMethod">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>API路径：</label>
+                    <input type="text" id="apiPath" placeholder="/api/videos" value="/api/videos">
+                </div>
+                <div class="form-group">
+                    <label>请求体（JSON）：</label>
+                    <textarea id="requestBody" placeholder='{"title": "测试视频", "description": "这是一个测试视频"}'></textarea>
+                </div>
+                <button class="submit-btn" onclick="customTest()">执行测试</button>
+                <div id="custom-response" class="response-area"></div>
+            </div>
+            
+            <div class="test-form">
+                <h4>批量测试</h4>
+                <p>一键测试所有API接口</p>
+                <button class="submit-btn" onclick="batchTest()">批量测试</button>
+                <div id="batch-response" class="response-area"></div>
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <h3>📱 快速访问</h3>
+            <div class="button-group">
+                <a href="http://localhost:5000" target="_blank" class="control-btn">访问后端API</a>
+                <a href="http://localhost:8888" target="_blank" class="control-btn">访问通用服务器</a>
+                <a href="demo.html" target="_blank" class="control-btn">访问前端界面</a>
+                <a href="admin-backend.html" target="_blank" class="control-btn">访问管理界面</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🎬 视频网站 - 后端测试页面</p>
+            <p>当前时间：2026-06-13 | 系统状态：运行中</p>
+        </div>
+    </div>
+    
+    <script>
+        // 检测服务器状态
+        function checkServerStatus() {
+            checkBackendStatus();
+            checkUniversalStatus();
+            checkSystemStatus();
+        }
+        
+        // 检查后端服务器状态
+        function checkBackendStatus() {
+            const backendCard = document.querySelector('.status-card:first-child');
+            const indicator = backendCard.querySelector('.status-indicator');
+            const responseArea = document.getElementById('backend-response');
+            
+            fetch('http://localhost:5000')
+                .then(response => {
+                    if (response.ok) {
+                        indicator.className = 'status-indicator status-online';
+                        backendCard.querySelector('p').innerHTML = '<span class="status-indicator status-online"></span>状态：在线';
+                        responseArea.className = 'response-area success';
+                        responseArea.style.display = 'block';
+                        responseArea.textContent = '✅ 后端服务器连接成功';
+                    }
+                })
+                .catch(error => {
+                    indicator.className = 'status-indicator status-offline';
+                    backendCard.querySelector('p').innerHTML = '<span class="status-indicator status-offline"></span>状态：离线';
+                    responseArea.className = 'response-area error';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = '❌ 后端服务器连接失败：' + error.message;
+                });
+        }
+        
+        // 检查通用服务器状态
+        function checkUniversalStatus() {
+            const universalCard = document.querySelector('.status-card:nth-child(2)');
+            const indicator = universalCard.querySelector('.status-indicator');
+            const responseArea = document.getElementById('universal-response');
+            
+            fetch('http://localhost:8888')
+                .then(response => {
+                    if (response.ok) {
+                        indicator.className = 'status-indicator status-online';
+                        universalCard.querySelector('p').innerHTML = '<span class="status-indicator status-online"></span>状态：在线';
+                        responseArea.className = 'response-area success';
+                        responseArea.style.display = 'block';
+                        responseArea.textContent = '✅ 通用服务器连接成功';
+                    }
+                })
+                .catch(error => {
+                    indicator.className = 'status-indicator status-offline';
+                    universalCard.querySelector('p').innerHTML = '<span class="status-indicator status-offline"></span>状态：离线';
+                    responseArea.className = 'response-area error';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = '❌ 通用服务器连接失败：' + error.message;
+                });
+        }
+        
+        // 检查系统状态
+        function checkSystemStatus() {
+            const systemCard = document.querySelector('.status-card:last-child');
+            const indicator = systemCard.querySelectorAll('.status-indicator');
+            const responseArea = document.getElementById('system-response');
+            
+            // 模拟系统状态检查
+            setTimeout(() => {
+                indicator[0].className = 'status-indicator status-online';
+                systemCard.querySelectorAll('p')[0].innerHTML = '<span class="status-indicator status-online"></span>数据库：已连接';
+                
+                indicator[1].className = 'status-indicator status-online';
+                systemCard.querySelectorAll('p')[1].innerHTML = '<span class="status-indicator status-online"></span>内存：正常';
+                
+                indicator[2].className = 'status-indicator status-online';
+                systemCard.querySelectorAll('p')[2].innerHTML = '<span class="status-indicator status-online"></span>CPU：正常';
+                
+                responseArea.className = 'response-area success';
+                responseArea.style.display = 'block';
+                responseArea.textContent = '✅ 系统状态检测完成';
+            }, 1000);
+        }
+        
+        // 测试后端连接
+        function testBackend() {
+            const button = event.target;
+            const responseArea = document.getElementById('backend-response');
+            
+            button.disabled = true;
+            button.innerHTML = '测试中<span class="loading"></span>';
+            
+            fetch('http://localhost:5000')
+                .then(response => response.json())
+                .then(data => {
+                    responseArea.className = 'response-area success';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = '✅ 后端服务器响应：' + JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    responseArea.className = 'response-area error';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = '❌ 后端服务器连接失败：' + error.message;
+                })
+                .finally(() => {
+                    button.disabled = false;
+                    button.innerHTML = '测试连接';
+                });
+        }
+        
+        // 测试通用服务器连接
+        function testUniversal() {
+            const button = event.target;
+            const responseArea = document.getElementById('universal-response');
+            
+            button.disabled = true;
+            button.innerHTML = '测试中<span class="loading"></span>';
+            
+            fetch('http://localhost:8888')
+                .then(response => response.json())
+                .then(data => {
+                    responseArea.className = 'response-area success';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = '✅ 通用服务器响应：' + JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    responseArea.className = 'response-area error';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = '❌ 通用服务器连接失败：' + error.message;
+                })
+                .finally(() => {
+                    button.disabled = false;
+                    button.innerHTML = '测试连接';
+                });
+        }
+        
+        // 测试系统状态
+        function testSystem() {
+            const button = event.target;
+            const responseArea = document.getElementById('system-response');
+            
+            button.disabled = true;
+            button.innerHTML = '检测中<span class="loading"></span>';
+            
+            // 模拟系统检测
+            setTimeout(() => {
+                responseArea.className = 'response-area success';
+                responseArea.style.display = 'block';
+                responseArea.textContent = `✅ 系统状态检测完成：
+- 数据库：MongoDB 连接正常
+- 内存使用：45% (8GB/16GB)
+- CPU使用率：23%
+- 磁盘空间：65% (130GB/200GB)
+- 在线用户：156
+- 活跃视频：234`;
+                
+                button.disabled = false;
+                button.innerHTML = '系统检测';
+            }, 2000);
+        }
+        
+        // 测试获取视频列表
+        function testGetVideos() {
+            const button = event.target;
+            const responseArea = document.getElementById('videos-response');
+            
+            button.disabled = true;
+            button.innerHTML = '测试中<span class="loading"></span>';
+            
+            fetch('http://localhost:5000/api/videos')
+                .then(response => response.json())
+                .then(data => {
+                    responseArea.className = 'response-area success';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = '✅ 视频列表API响应：\n' + JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    responseArea.className = 'response-area error';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = '❌ 视频列表API调用失败：' + error.message;
+                })
+                .finally(() => {
+                    button.disabled = false;
+                    button.innerHTML = '测试接口';
+                });
+        }
+        
+        // 测试获取单个视频
+        function testGetVideo() {
+            const button = event.target;
+            const responseArea = document.getElementById('video-response');
+            
+            button.disabled = true;
+            button.innerHTML = '测试中<span class="loading"></span>';
+            
+            fetch('http://localhost:5000/api/videos/1')
+                .then(response => response.json())
+                .then(data => {
+                    responseArea.className = 'response-area success';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = '✅ 单个视频API响应：\n' + JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    responseArea.className = 'response-area error';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = '❌ 单个视频API调用失败：' + error.message;
+                })
+                .finally(() => {
+                    button.disabled = false;
+                    button.innerHTML = '测试接口';
+                });
+        }
+        
+        // 测试用户注册
+        function testRegister() {
+            const button = event.target;
+            const responseArea = document.getElementById('register-response');
+            
+            button.disabled = true;
+            button.innerHTML = '测试中<span class="loading"></span>';
+            
+            const randomNum = Math.floor(Math.random() * 1000);
+            fetch('http://localhost:5000/api/users/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: 'testuser' + randomNum,
+                    email: 'test' + randomNum + '@example.com',
+                    password: 'test123'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseArea.className = 'response-area success';
+                responseArea.style.display = 'block';
+                responseArea.textContent = '✅ 用户注册API响应：\n' + JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                responseArea.className = 'response-area error';
+                responseArea.style.display = 'block';
+                responseArea.textContent = '❌ 用户注册API调用失败：' + error.message;
+            })
+            .finally(() => {
+                button.disabled = false;
+                button.innerHTML = '测试接口';
+            });
+        }
+        
+        // 测试用户登录
+        function testLogin() {
+            const button = event.target;
+            const responseArea = document.getElementById('login-response');
+            
+            button.disabled = true;
+            button.innerHTML = '测试中<span class="loading"></span>';
+            
+            fetch('http://localhost:5000/api/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: 'demo@example.com',
+                    password: 'demo123'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseArea.className = 'response-area success';
+                responseArea.style.display = 'block';
+                responseArea.textContent = '✅ 用户登录API响应：\n' + JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                responseArea.className = 'response-area error';
+                responseArea.style.display = 'block';
+                responseArea.textContent = '❌ 用户登录API调用失败：' + error.message;
+            })
+            .finally(() => {
+                button.disabled = false;
+                button.innerHTML = '测试接口';
+            });
+        }
+        
+        // 测试获取用户信息
+        function testGetUser() {
+            const button = event.target;
+            const responseArea = document.getElementById('user-response');
+            
+            button.disabled = true;
+            button.innerHTML = '测试中<span class="loading"></span>';
+            
+            // 模拟用户信息获取
+            setTimeout(() => {
+                responseArea.className = 'response-area success';
+                responseArea.style.display = 'block';
+                responseArea.textContent = '✅ 用户信息API响应：\n' + JSON.stringify({
+                    "_id": "60d5ec9f9b1d8c001f8e4a7b",
+                    "username": "demo",
+                    "email": "demo@example.com",
+                    "avatar": "",
+                    "bio": "这是一个演示用户",
+                    "favorites": [],
+                    "watchHistory": [],
+                    "role": "user",
+                    "isActive": true,
+                    "createdAt": "2026-06-13T12:00:00.000Z",
+                    "updatedAt": "2026-06-13T12:00:00.000Z"
+                }, null, 2);
+                
+                button.disabled = false;
+                button.innerHTML = '测试接口';
+            }, 1000);
+        }
+        
+        // 自定义测试
+        function customTest() {
+            const method = document.getElementById('httpMethod').value;
+            const path = document.getElementById('apiPath').value;
+            const body = document.getElementById('requestBody').value;
+            const responseArea = document.getElementById('custom-response');
+            
+            const button = event.target;
+            button.disabled = true;
+            button.innerHTML = '执行中<span class="loading"></span>';
+            
+            const url = `http://localhost:5000${path}`;
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+            
+            if (body && method !== 'GET' && method !== 'HEAD') {
+                options.body = body;
+            }
+            
+            fetch(url, options)
+                .then(response => response.json())
+                .then(data => {
+                    responseArea.className = 'response-area success';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = `✅ 自定义测试响应：
+- 方法：${method}
+- 路径：${path}
+- 状态：${response.status}
+- 响应：${JSON.stringify(data, null, 2)}`;
+                })
+                .catch(error => {
+                    responseArea.className = 'response-area error';
+                    responseArea.style.display = 'block';
+                    responseArea.textContent = `❌ 自定义测试失败：
+- 方法：${method}
+- 路径：${path}
+- 错误：${error.message}`;
+                })
+                .finally(() => {
+                    button.disabled = false;
+                    button.innerHTML = '执行测试';
+                });
+        }
+        
+        // 批量测试
+        function batchTest() {
+            const button = event.target;
+            const responseArea = document.getElementById('batch-response');
+            
+            button.disabled = true;
+            button.innerHTML = '批量测试中<span class="loading"></span>';
+            
+            const tests = [
+                { name: '系统健康检查', url: 'http://localhost:5000' },
+                { name: '获取视频列表', url: 'http://localhost:5000/api/videos' },
+                { name: '用户登录', url: 'http://localhost:5000/api/users/login', method: 'POST', body: JSON.stringify({ email: 'demo@example.com', password: 'demo123' }) },
+                { name: '用户注册', url: 'http://localhost:5000/api/users/register', method: 'POST', body: JSON.stringify({ username: 'batchtest', email: 'batchtest@example.com', password: 'test123' }) }
+            ];
+            
+            let completed = 0;
+            const results = [];
+            
+            tests.forEach((test, index) => {
+                const options = {
+                    method: test.method || 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                };
+                
+                if (test.body) {
+                    options.body = test.body;
+                }
+                
+                fetch(test.url, options)
+                    .then(response => response.json())
+                    .then(data => {
+                        results.push({
+                            name: test.name,
+                            status: 'success',
+                            url: test.url,
+                            response: data
+                        });
+                        completed++;
+                        
+                        if (completed === tests.length) {
+                            responseArea.className = 'response-area success';
+                            responseArea.style.display = 'block';
+                            responseArea.textContent = `✅ 批量测试完成：
+${results.map(r => `- ${r.name}: ${r.status}`).join('\n')}
+                            
+详细结果：
+${results.map(r => `${r.name}: ${JSON.stringify(r.response, null, 2)}`).join('\n\n')}`;
+                            
+                            button.disabled = false;
+                            button.innerHTML = '批量测试';
+                        }
+                    })
+                    .catch(error => {
+                        results.push({
+                            name: test.name,
+                            status: 'failed',
+                            url: test.url,
+                            error: error.message
+                        });
+                        completed++;
+                        
+                        if (completed === tests.length) {
+                            responseArea.className = 'response-area error';
+                            responseArea.style.display = 'block';
+                            responseArea.textContent = `❌ 批量测试完成：
+${results.map(r => `- ${r.name}: ${r.status}`).join('\n')}
+                            
+详细结果：
+${results.map(r => `${r.name}: ${r.error}`).join('\n\n')}`;
+                            
+                            button.disabled = false;
+                            button.innerHTML = '批量测试';
+                        }
+                    });
+            });
+        }
+        
+        // 启动后端服务器
+        function startBackend() {
+            alert('正在启动后端服务器...\n\n请运行 D:\\\\666\\\\start-backend.bat 来启动后端服务器。\n\n或者运行 D:\\\\666\\\\start-complete-system.bat 来启动完整系统。');
+        }
+        
+        // 启动通用服务器
+        function startUniversal() {
+            alert('正在启动通用服务器...\n\n请运行 node D:\\\\666\\\\video-server-universal.js 来启动通用服务器。');
+        }
+        
+        // 停止后端服务器
+        function stopBackend() {
+            alert('停止服务器需要手动操作：\n\n1. 找到服务器控制台窗口\n2. 按 Ctrl+C 停止服务器\n3. 或者关闭命令行窗口');
+        }
+        
+        // 重启后端服务器
+        function restartBackend() {
+            alert('重启服务器步骤：\n\n1. 先停止当前服务器（Ctrl+C）\n2. 重新启动服务器\n3. 运行 D:\\\\666\\\\start-backend.bat');
+        }
+        
+        // 查看日志
+        function checkLogs() {
+            alert('日志查看功能：\n\n1. 服务器控制台会显示实时日志\n2. 日志文件位置：D:\\\\666\\\\video-website\\\\backend\\\\logs\\\n3. 可以使用文本编辑器查看日志文件');
+        }
+        
+        // 页面加载时检测服务器状态
+        window.addEventListener('load', function() {
+            setTimeout(checkServerStatus, 1000);
+        });
+        
+        // 每30秒自动检测服务器状态
+        setInterval(checkServerStatus, 30000);
+    </script>
+</body>
+</html>

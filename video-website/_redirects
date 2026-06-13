@@ -1,13 +1,17 @@
-/* Netlify 重定向配置 */
-/* 将所有请求重定向到正确的页面 */
+# 视频网站重定向规则
+# Netlify _redirects 文件
 
-/* 单页应用重定向 - 如果需要 */
-/* /*    /index.html   200 */
+# 首页
+/  /index.html  200
 
-/* 特定页面重定向 */
-/demo-mobile.html    /demo-mobile.html   200
-/test.html          /test.html         200
-/404.html           /404.html          200
+# 演示页面
+/demo  /demo.html  200
+/demo-mobile  /demo-mobile.html  200
 
-/* 默认重定向到主页 */
-/                   /demo.html         200
+# 管理页面
+/admin  /admin-backend.html  200
+/test  /backend-test.html  200
+/docs  /api-documentation.html  200
+
+# SPA fallback
+/*  /index.html  404

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频网站 - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .logo {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .nav-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s;
+            display: block;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .nav-card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .nav-card h3 {
+            margin-bottom: 5px;
+        }
+        
+        .nav-card p {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+        
+        .status-bar {
+            margin-top: 30px;
+            padding: 15px;
+            background: #e8f5e9;
+            border-radius: 10px;
+            color: #2e7d32;
+        }
+        
+        .version {
+            margin-top: 20px;
+            color: #999;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🎬</div>
+        <h1>视频网站</h1>
+        <p class="subtitle">全栈视频管理平台 · 已部署到Netlify</p>
+        
+        <div class="nav-grid">
+            <a href="/demo.html" class="nav-card">
+                <div class="icon">🏠</div>
+                <h3>首页</h3>
+                <p>浏览视频内容</p>
+            </a>
+            
+            <a href="/demo-mobile.html" class="nav-card">
+                <div class="icon">📱</div>
+                <h3>移动版</h3>
+                <p>移动端界面</p>
+            </a>
+            
+            <a href="/admin-backend.html" class="nav-card">
+                <div class="icon">⚙️</div>
+                <h3>管理后台</h3>
+                <p>服务器管理</p>
+            </a>
+            
+            <a href="/backend-test.html" class="nav-card">
+                <div class="icon">🧪</div>
+                <h3>API测试</h3>
+                <p>后端接口测试</p>
+            </a>
+            
+            <a href="/api-documentation.html" class="nav-card">
+                <div class="icon">📚</div>
+                <h3>API文档</h3>
+                <p>接口文档说明</p>
+            </a>
+            
+            <a href="/test.html" class="nav-card">
+                <div class="icon">🔍</div>
+                <h3>系统测试</h3>
+                <p>功能测试页面</p>
+            </a>
+        </div>
+        
+        <div class="status-bar">
+            ✅ 系统运行正常 | 🌐 已部署到Netlify
+        </div>
+        
+        <div class="version">
+            版本 1.0.0 | 最后更新：2026-06-13
+        </div>
+    </div>
+</body>
+</html>
