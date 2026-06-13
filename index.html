@@ -3,91 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>视频网站 - 加载中...</title>
+    <title>视频网站</title>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
+            display: flex; align-items: center; justify-content: center;
             padding: 20px;
         }
         .container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
+            background: #1a1a1a; border-radius: 24px; padding: 48px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5); text-align: center;
+            max-width: 500px; width: 100%;
         }
-        .logo {
-            font-size: 4em;
-            margin-bottom: 20px;
+        .logo { font-size: 5em; margin-bottom: 16px; }
+        h1 { font-size: 2.2em; margin-bottom: 8px; color: #fff; }
+        .sub { color: #aaa; margin-bottom: 32px; font-size: 1.1em; }
+        .features { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; }
+        .feature {
+            display: flex; align-items: center; gap: 12px;
+            padding: 16px 20px; background: #252525; border-radius: 12px;
+            text-align: left; color: #ccc; font-size: 14px;
         }
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
+        .feature .icon { font-size: 24px; }
+        .enter-btn {
+            display: inline-block; padding: 16px 48px;
+            background: #fe2c55; color: white; border: none; border-radius: 28px;
+            font-size: 18px; font-weight: 700; cursor: pointer;
+            text-decoration: none; transition: all 0.2s;
         }
-        p {
-            color: #666;
-            margin-bottom: 20px;
-        }
-        .loading {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .links {
-            margin-top: 30px;
-        }
+        .enter-btn:hover { background: #e0264c; transform: scale(1.05); }
+        .links { margin-top: 24px; display: flex; gap: 12px; justify-content: center; }
         .links a {
-            display: inline-block;
-            margin: 10px;
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: bold;
-            transition: all 0.3s;
+            padding: 10px 20px; background: transparent; color: #aaa;
+            border: 1px solid #333; border-radius: 20px; text-decoration: none;
+            font-size: 13px; transition: all 0.2s;
         }
-        .links a:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
+        .links a:hover { border-color: #fe2c55; color: #fe2c55; }
+        .version { margin-top: 24px; color: #555; font-size: 12px; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="logo">🎬</div>
         <h1>视频网站</h1>
-        <p>正在加载中...</p>
-        <div class="loading"></div>
-        <p>如果页面没有自动跳转，请点击以下链接：</p>
-        <div class="links">
-            <a href="/video-website/demo.html">首页</a>
-            <a href="/video-website/demo-mobile.html">移动版</a>
-            <a href="/video-website/admin-backend.html">管理后台</a>
+        <p class="sub">支持真实视频上传与播放</p>
+        <div class="features">
+            <div class="feature"><span class="icon">📤</span>上传本地视频文件，支持拖拽</div>
+            <div class="feature"><span class="icon">▶️</span>在线播放，支持全屏、进度控制</div>
+            <div class="feature"><span class="icon">🔍</span>搜索、分类、管理你的视频库</div>
+            <div class="feature"><span class="icon">💾</span>视频存储在浏览器本地，无需服务器</div>
         </div>
+        <a href="/demo.html" class="enter-btn">进入视频网站</a>
+        <div class="links">
+            <a href="/demo.html">电脑版</a>
+            <a href="/demo-mobile.html">手机版</a>
+        </div>
+        <div class="version">v2.0 正式版 | 2026-06-13</div>
     </div>
-    <script>
-        // 自动跳转到视频网站首页
-        setTimeout(function() {
-            window.location.href = '/video-website/demo.html';
-        }, 2000);
-    </script>
 </body>
 </html>

@@ -2,10 +2,10 @@
 chcp 65001 >nul
 echo.
 echo ========================================
-echo     🎬 视频网站 - 修复404错误
+echo     🎬 视频网站 - 快速部署
 echo ========================================
 echo.
-echo 正在修复Netlify部署问题...
+echo 正在部署最新更改到Netlify...
 echo.
 
 :: 检查Git是否安装
@@ -20,29 +20,21 @@ if %errorlevel% neq 0 (
 :: 进入项目目录
 cd D:\666\video-website
 
-echo 🔄 正在检查文件...
-echo.
-
-echo ✅ 以下文件已修复：
-echo - netlify.toml (修复了publish配置)
-echo - _redirects (修复了注释格式)
-echo - index.html (创建了新的首页)
-echo - 404.html (更新了404页面)
-echo.
+echo 🔄 正在添加所有文件...
+git add .
 
 echo 🔄 正在提交更改...
-git add .
-git commit -m "Fix 404 error: Update Netlify configuration and redirects"
+git commit -m "Update: Video website with fixed Netlify configuration"
 
-echo 🔄 正在推送更改...
+echo 🔄 正在推送到GitHub...
 git push origin main
 
 echo.
-echo ✅ 修复完成！
+echo ✅ 部署完成！
 echo.
-echo 🌐 请等待Netlify自动重新部署（通常需要1-2分钟）
+echo 🌐 Netlify将自动重新部署（1-2分钟）
 echo.
-echo 📱 部署后访问地址：
+echo 📱 访问地址：
 echo - 首页：https://your-site-name.netlify.app/
 echo - 演示页：https://your-site-name.netlify.app/demo.html
 echo - 移动版：https://your-site-name.netlify.app/demo-mobile.html
@@ -50,10 +42,6 @@ echo - 管理后台：https://your-site-name.netlify.app/admin-backend.html
 echo - API测试：https://your-site-name.netlify.app/backend-test.html
 echo - API文档：https://your-site-name.netlify.app/api-documentation.html
 echo.
-echo 🔧 如果仍然出现404错误：
-echo 1. 登录Netlify控制台
-echo 2. 检查构建日志
-echo 3. 确认publish目录设置为 "."
-echo 4. 手动触发重新部署
+echo 🎬 视频网站已成功部署到Netlify！
 echo.
 pause

@@ -3,783 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>视频网站 - 手机版</title>
+    <title>视频网站</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f5f5f5;
-            line-height: 1.6;
-            font-size: 16px;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 100%;
-            margin: 0;
-            padding: 10px;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 0;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        
-        .header h1 {
-            font-size: 1.8em;
-            margin-bottom: 5px;
-        }
-        
-        .header p {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-        
-        .nav {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .nav button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 20px;
-            background: #667eea;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-            min-width: 80px;
-        }
-        
-        .nav button:hover {
-            background: #5a67d8;
-            transform: translateY(-1px);
-        }
-        
-        .nav button.active {
-            background: #764ba2;
-        }
-        
-        .content {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        
-        .video-card {
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s;
-            cursor: pointer;
-            background: white;
-        }
-        
-        .video-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-        }
-        
-        .video-thumbnail {
-            width: 100%;
-            height: 140px;
-            background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2em;
-            color: #999;
-            position: relative;
-        }
-        
-        .video-duration {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            background: rgba(0,0,0,0.8);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 11px;
-        }
-        
-        .video-info {
-            padding: 12px;
-        }
-        
-        .video-title {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 3px;
-            color: #333;
-            line-height: 1.3;
-        }
-        
-        .video-description {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-        
-        .video-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 11px;
-            color: #999;
-        }
-        
-        .video-stats {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .login-form {
-            max-width: 100%;
-            margin: 30px 10px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .login-form h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #333;
-            font-size: 1.3em;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #333;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            -webkit-appearance: none;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        .login-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-        
-        .login-btn:hover {
-            transform: translateY(-2px);
-        }
-        
-        .register-link {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-        
-        .register-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #c3e6cb;
-            font-size: 14px;
-        }
-        
-        .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #f5c6cb;
-            font-size: 14px;
-        }
-        
-        .section-title {
-            font-size: 1.2em;
-            color: #333;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        
-        .upload-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-        
-        .profile-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .stat-card {
-            text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-        
-        .stat-card h4 {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 8px;
-        }
-        
-        .stat-card p {
-            font-size: 20px;
-            color: #667eea;
-            font-weight: bold;
-        }
-        
-        @media (max-width: 480px) {
-            .video-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 1.5em;
-            }
-            
-            .nav {
-                gap: 5px;
-            }
-            
-            .nav button {
-                padding: 6px 12px;
-                font-size: 12px;
-                min-width: 70px;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --primary: #fe2c55; --bg: #0f0f0f; --bg-card: #1a1a1a; --text: #fff; --text-sec: #aaa; --border: #333; }
+        body { font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 60px; }
+        /* Top Bar */
+        .top-bar { position: fixed; top: 0; left: 0; right: 0; height: 50px; background: rgba(15,15,15,0.95); backdrop-filter: blur(10px); display: flex; align-items: center; padding: 0 16px; z-index: 100; border-bottom: 1px solid var(--border); }
+        .top-bar .logo { font-size: 20px; font-weight: bold; color: var(--primary); }
+        .top-bar .search { flex: 1; margin: 0 12px; }
+        .top-bar .search input { width: 100%; height: 36px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; padding: 0 14px; color: var(--text); font-size: 14px; outline: none; }
+        .top-bar .search input:focus { border-color: var(--primary); }
+        .upload-btn { background: var(--primary); color: #fff; border: none; width: 36px; height: 36px; border-radius: 50%; font-size: 18px; cursor: pointer; }
+        /* Content */
+        .content { margin-top: 50px; padding: 12px; }
+        /* Category */
+        .cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; scrollbar-width: none; }
+        .cats::-webkit-scrollbar { display: none; }
+        .cat { padding: 6px 14px; background: var(--bg-card); border-radius: 16px; font-size: 13px; white-space: nowrap; cursor: pointer; border: 1px solid var(--border); }
+        .cat.active { background: var(--primary); border-color: var(--primary); }
+        /* Video List */
+        .video-list { display: flex; flex-direction: column; gap: 12px; }
+        .video-item { background: var(--bg-card); border-radius: 10px; overflow: hidden; cursor: pointer; }
+        .thumb { position: relative; width: 100%; padding-top: 56.25%; background: #000; }
+        .thumb img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .thumb .dur { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.8); padding: 2px 5px; border-radius: 3px; font-size: 11px; }
+        .thumb .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 44px; height: 44px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; opacity: 0; transition: opacity 0.2s; }
+        .video-item:active .play-btn { opacity: 1; }
+        .v-info { padding: 10px 12px; }
+        .v-title { font-size: 14px; font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .v-meta { display: flex; gap: 10px; margin-top: 6px; font-size: 12px; color: var(--text-sec); }
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 56px; background: rgba(15,15,15,0.98); border-top: 1px solid var(--border); display: flex; z-index: 100; }
+        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 11px; color: var(--text-sec); cursor: pointer; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item .icon { font-size: 22px; }
+        /* Modal */
+        .modal-bg { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .modal-bg.show { opacity: 1; pointer-events: all; }
+        .modal { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); border-radius: 16px 16px 0 0; padding: 20px; z-index: 201; transform: translateY(100%); transition: transform 0.3s; max-height: 90vh; overflow-y: auto; }
+        .modal-bg.show .modal { transform: translateY(0); }
+        .modal h3 { font-size: 18px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+        .modal h3 .close { background: none; border: none; color: var(--text-sec); font-size: 24px; cursor: pointer; }
+        .upload-area { border: 2px dashed var(--border); border-radius: 10px; padding: 30px; text-align: center; cursor: pointer; margin-bottom: 16px; }
+        .upload-area .icon { font-size: 40px; margin-bottom: 8px; }
+        .upload-area p { color: var(--text-sec); font-size: 13px; }
+        .upload-area .file-name { margin-top: 8px; font-size: 12px; color: var(--primary); }
+        .form-grp { margin-bottom: 14px; }
+        .form-grp label { display: block; margin-bottom: 6px; font-size: 13px; color: var(--text-sec); }
+        .form-grp input, .form-grp textarea, .form-grp select { width: 100%; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 14px; outline: none; }
+        .form-grp input:focus, .form-grp textarea:focus { border-color: var(--primary); }
+        .form-grp textarea { resize: none; height: 60px; }
+        .submit-btn { width: 100%; padding: 12px; background: var(--primary); color: #fff; border: none; border-radius: 20px; font-size: 15px; font-weight: 600; cursor: pointer; }
+        .progress { display: none; margin: 12px 0; }
+        .progress .bar { height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
+        .progress .bar .fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+        .progress .txt { text-align: center; font-size: 12px; color: var(--text-sec); margin-top: 4px; }
+        /* Player Page */
+        .player-page { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 300; display: none; flex-direction: column; }
+        .player-page.show { display: flex; }
+        .player-top { height: 50px; display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid var(--border); }
+        .player-top .back { font-size: 14px; color: var(--text-sec); cursor: pointer; background: none; border: none; }
+        .player-vid { width: 100%; aspect-ratio: 16/9; background: #000; }
+        .player-vid video { width: 100%; height: 100%; }
+        .player-detail { flex: 1; overflow-y: auto; padding: 16px; }
+        .player-detail h2 { font-size: 18px; margin-bottom: 10px; }
+        .player-detail .meta { display: flex; gap: 12px; color: var(--text-sec); font-size: 13px; margin-bottom: 12px; flex-wrap: wrap; }
+        .player-detail .actions { display: flex; gap: 10px; margin-bottom: 16px; }
+        .player-detail .actions button { flex: 1; padding: 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-size: 13px; cursor: pointer; }
+        .player-detail .actions button:active { background: var(--primary); }
+        .player-detail .desc { padding: 12px; background: var(--bg-card); border-radius: 8px; color: var(--text-sec); font-size: 13px; line-height: 1.6; }
+        /* Empty */
+        .empty { text-align: center; padding: 60px 20px; }
+        .empty .icon { font-size: 48px; margin-bottom: 12px; }
+        .empty h3 { margin-bottom: 6px; }
+        .empty p { color: var(--text-sec); font-size: 14px; margin-bottom: 16px; }
+        .empty .btn { padding: 10px 24px; background: var(--primary); color: #fff; border: none; border-radius: 20px; font-size: 14px; cursor: pointer; }
+        /* Toast */
+        .toast-box { position: fixed; top: 60px; left: 50%; transform: translateX(-50%); z-index: 500; }
+        .toast { padding: 10px 16px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; animation: fadeIn 0.3s; margin-bottom: 8px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎬 视频网站</h1>
-            <p>手机版 - 随时随地观看精彩视频</p>
+    <div class="top-bar">
+        <span class="logo">🎬</span>
+        <div class="search">
+            <input type="text" id="sInput" placeholder="搜索视频..." onkeyup="if(event.key==='Enter')doSearch()">
         </div>
-        
-        <div id="loginSection" class="login-form">
-            <h2>用户登录</h2>
-            <div id="authMessage"></div>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">邮箱:</label>
-                    <input type="email" id="email" name="email" required placeholder="请输入邮箱">
-                </div>
-                <div class="form-group">
-                    <label for="password">密码:</label>
-                    <input type="password" id="password" name="password" required placeholder="请输入密码">
-                </div>
-                <button type="submit" class="login-btn">登录</button>
-            </form>
-            <div class="register-link">
-                <p>还没有账号？<a href="#" onclick="showRegister()">立即注册</a></p>
-            </div>
+        <button class="upload-btn" onclick="openUpload()">+</button>
+    </div>
+
+    <div class="content" id="homeContent">
+        <div class="cats" id="catBar">
+            <div class="cat active" onclick="filterCat('')">全部</div>
+            <div class="cat" onclick="filterCat('娱乐')">娱乐</div>
+            <div class="cat" onclick="filterCat('科技')">科技</div>
+            <div class="cat" onclick="filterCat('音乐')">音乐</div>
+            <div class="cat" onclick="filterCat('游戏')">游戏</div>
+            <div class="cat" onclick="filterCat('教育')">教育</div>
+            <div class="cat" onclick="filterCat('生活')">生活</div>
         </div>
-        
-        <div id="registerSection" class="login-form hidden">
-            <h2>用户注册</h2>
-            <div id="registerMessage"></div>
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="regUsername">用户名:</label>
-                    <input type="text" id="regUsername" name="username" required placeholder="请输入用户名">
-                </div>
-                <div class="form-group">
-                    <label for="regEmail">邮箱:</label>
-                    <input type="email" id="regEmail" name="email" required placeholder="请输入邮箱">
-                </div>
-                <div class="form-group">
-                    <label for="regPassword">密码:</label>
-                    <input type="password" id="regPassword" name="password" required placeholder="请输入密码">
-                </div>
-                <div class="form-group">
-                    <label for="confirmPassword">确认密码:</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="请确认密码">
-                </div>
-                <button type="submit" class="login-btn">注册</button>
-            </form>
-            <div class="register-link">
-                <p>已有账号？<a href="#" onclick="showLogin()">立即登录</a></p>
-            </div>
-        </div>
-        
-        <div id="mainContent" class="content hidden">
-            <div class="nav">
-                <button class="active" onclick="showSection('home')">首页</button>
-                <button onclick="showSection('upload')">上传</button>
-                <button onclick="showSection('search')">搜索</button>
-                <button onclick="showSection('profile')">我的</button>
-                <button onclick="logout()">退出</button>
-            </div>
-            
-            <div id="homeSection">
-                <h2 class="section-title">🏠 热门视频</h2>
-                <div class="video-grid" id="videoGrid">
-                    <!-- 视频卡片将通过JavaScript动态生成 -->
-                </div>
-            </div>
-            
-            <div id="uploadSection" class="hidden">
-                <h2 class="section-title">📤 上传视频</h2>
-                <form id="uploadForm">
-                    <div class="form-group">
-                        <label for="videoTitle">视频标题:</label>
-                        <input type="text" id="videoTitle" name="title" required placeholder="请输入视频标题">
-                    </div>
-                    <div class="form-group">
-                        <label for="videoDescription">视频描述:</label>
-                        <textarea id="videoDescription" name="description" rows="3" placeholder="请输入视频描述" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="videoCategory">视频分类:</label>
-                        <select id="videoCategory" name="category" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px;">
-                            <option value="科技">科技</option>
-                            <option value="娱乐">娱乐</option>
-                            <option value="教育">教育</option>
-                            <option value="音乐">音乐</option>
-                            <option value="游戏">游戏</option>
-                            <option value="体育">体育</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="videoFile">选择视频:</label>
-                        <input type="file" id="videoFile" name="video" accept="video/*" required>
-                    </div>
-                    <button type="submit" class="upload-btn">上传视频</button>
-                </form>
-            </div>
-            
-            <div id="searchSection" class="hidden">
-                <h2 class="section-title">🔍 搜索视频</h2>
-                <input type="text" id="searchInput" class="search-input" placeholder="输入关键词搜索视频...">
-                <button onclick="searchVideos()" class="upload-btn">搜索</button>
-                <div class="video-grid" id="searchResults" style="margin-top: 15px;">
-                    <!-- 搜索结果将通过JavaScript动态生成 -->
-                </div>
-            </div>
-            
-            <div id="profileSection" class="hidden">
-                <h2 class="section-title">👤 个人中心</h2>
-                <div id="userInfo">
-                    <!-- 用户信息将通过JavaScript动态生成 -->
-                </div>
-            </div>
+        <div class="video-list" id="videoList"></div>
+        <div id="emptyBox" class="empty" style="display:none">
+            <div class="icon">🎬</div>
+            <h3>还没有视频</h3>
+            <p>上传你的第一个视频吧</p>
+            <button class="btn" onclick="openUpload()">上传视频</button>
         </div>
     </div>
 
+    <!-- Player -->
+    <div class="player-page" id="playerPage">
+        <div class="player-top">
+            <button class="back" onclick="closePlayer()">← 返回</button>
+        </div>
+        <div class="player-vid"><video id="mPlayer" controls playsinline></video></div>
+        <div class="player-detail">
+            <h2 id="pTitle"></h2>
+            <div class="meta">
+                <span id="pViews"></span><span id="pDate"></span><span id="pCat"></span><span id="pSize"></span>
+            </div>
+            <div class="actions">
+                <button onclick="likeVideo()">👍 点赞</button>
+                <button onclick="dlVideo()">⬇️ 下载</button>
+                <button onclick="delVideo()" style="color:var(--primary)">🗑️ 删除</button>
+            </div>
+            <div class="desc" id="pDesc"></div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal-bg" id="uploadModal">
+        <div class="modal">
+            <h3>上传视频 <button class="close" onclick="closeUpload()">&times;</button></h3>
+            <div class="upload-area" onclick="document.getElementById('mFile').click()">
+                <div class="icon">📁</div>
+                <p>点击选择视频文件</p>
+                <div class="file-name" id="fName" style="display:none"></div>
+                <input type="file" id="mFile" accept="video/*" style="display:none" onchange="onFile(this)">
+            </div>
+            <div class="progress" id="prog">
+                <div class="bar"><div class="fill" id="progFill"></div></div>
+                <div class="txt" id="progTxt">准备中...</div>
+            </div>
+            <div class="form-grp"><label>标题 *</label><input type="text" id="vTitle" placeholder="视频标题"></div>
+            <div class="form-grp"><label>描述</label><textarea id="vDesc" placeholder="视频描述"></textarea></div>
+            <div class="form-grp"><label>分类</label>
+                <select id="vCat"><option value="娱乐">娱乐</option><option value="科技">科技</option><option value="音乐">音乐</option><option value="游戏">游戏</option><option value="教育">教育</option><option value="生活">生活</option><option value="其他">其他</option></select>
+            </div>
+            <button class="submit-btn" onclick="doUpload()">发布视频</button>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="filterCat('')"><span class="icon">🏠</span>首页</div>
+        <div class="nav-item" onclick="openUpload()"><span class="icon">➕</span>上传</div>
+        <div class="nav-item" onclick="clearAll()"><span class="icon">🗑️</span>清空</div>
+    </div>
+
+    <div class="toast-box" id="toastBox"></div>
+
     <script>
-        // 模拟数据
-        const mockVideos = [
-            {
-                id: 1,
-                title: "JavaScript 高级教程",
-                description: "深入理解JavaScript的高级特性和最佳实践",
-                category: "科技",
-                duration: 1200,
-                views: 15420,
-                likes: 892,
-                thumbnail: "https://via.placeholder.com/300x200?text=JS教程"
-            },
-            {
-                id: 2,
-                title: "React 项目实战",
-                description: "从零开始构建一个完整的React应用",
-                category: "教育",
-                duration: 1800,
-                views: 23150,
-                likes: 1203,
-                thumbnail: "https://via.placeholder.com/300x200?text=React实战"
-            },
-            {
-                id: 3,
-                title: "Node.js 后端开发",
-                description: "使用Node.js和Express构建RESTful API",
-                category: "科技",
-                duration: 2400,
-                views: 18970,
-                likes: 956,
-                thumbnail: "https://via.placeholder.com/300x200?text=Node.js"
-            },
-            {
-                id: 4,
-                title: "CSS 动画设计",
-                description: "创建令人惊艳的CSS动画效果",
-                category: "教育",
-                duration: 900,
-                views: 12430,
-                likes: 678,
-                thumbnail: "https://via.placeholder.com/300x200?text=CSS动画"
-            },
-            {
-                id: 5,
-                title: "Vue.js 入门指南",
-                description: "Vue.js框架的完整入门教程",
-                category: "教育",
-                duration: 1500,
-                views: 19860,
-                likes: 1102,
-                thumbnail: "https://via.placeholder.com/300x200?text=Vue.js"
-            },
-            {
-                id: 6,
-                title: "Python 数据分析",
-                description: "使用Python进行数据分析和可视化",
-                category: "科技",
-                duration: 2100,
-                views: 16780,
-                likes: 845,
-                thumbnail: "https://via.placeholder.com/300x200?text=Python数据分析"
-            }
-        ];
+    const DB='VideoDB', VER=1, STORE='videos';
+    let db=null, vids=[], curCat='', curSearch='', curId=null, selFile=null;
 
-        let currentUser = null;
-        let allVideos = [...mockVideos];
+    function openDB(){return new Promise((r,j)=>{const q=indexedDB.open(DB,VER);q.onerror=()=>j(q.error);q.onsuccess=()=>{db=q.result;r(db)};q.onupgradeneeded=e=>{if(!e.target.result.objectStoreNames.contains(STORE)){e.target.result.createObjectStore(STORE,{keyPath:'id'})}}})}
+    function dbAll(){return new Promise((r,j)=>{const tx=db.transaction(STORE,'readonly');const q=tx.objectStore(STORE).getAll();q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)})}
+    function dbPut(v){return new Promise((r,j)=>{const tx=db.transaction(STORE,'readwrite');const q=tx.objectStore(STORE).put(v);q.onsuccess=()=>r();q.onerror=()=>j(q.error)})}
+    function dbDel(id){return new Promise((r,j)=>{const tx=db.transaction(STORE,'readwrite');const q=tx.objectStore(STORE).delete(id);q.onsuccess=()=>r();q.onerror=()=>j(q.error)})}
+    function dbClr(){return new Promise((r,j)=>{const tx=db.transaction(STORE,'readwrite');const q=tx.objectStore(STORE).clear();q.onsuccess=()=>r();q.onerror=()=>j(q.error)})}
 
-        // 初始化页面
-        document.addEventListener('DOMContentLoaded', function() {
-            checkLoginStatus();
-            displayVideos();
-        });
+    function gid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,9)}
+    function fmtDur(s){if(!s||isNaN(s))return'00:00';const h=Math.floor(s/3600),m=Math.floor(s%3600/60),sec=Math.floor(s%60);return h>0?h+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0'):String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0')}
+    function fmtSz(b){if(b<1024)return b+'B';if(b<1048576)return(b/1024).toFixed(1)+'KB';if(b<1073741824)return(b/1048576).toFixed(1)+'MB';return(b/1073741824).toFixed(2)+'GB'}
+    function fmtDate(d){const diff=Date.now()-new Date(d);if(diff<60000)return'刚刚';if(diff<3600000)return Math.floor(diff/60000)+'分钟前';if(diff<86400000)return Math.floor(diff/3600000)+'小时前';return new Date(d).toLocaleDateString('zh-CN')}
+    function catIcon(c){return{'娱乐':'😄','科技':'💻','音乐':'🎵','游戏':'🎮','教育':'📚','生活':'🌟','其他':'📌'}[c]||'📌'}
+    function toast(m,t='s'){const b=document.getElementById('toastBox');const d=document.createElement('div');d.className='toast';d.textContent=(t==='s'?'✅':'❌')+' '+m;b.appendChild(d);setTimeout(()=>d.remove(),3000)}
 
-        // 检查登录状态
-        function checkLoginStatus() {
-            const token = localStorage.getItem('userToken');
-            if (token) {
-                currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                showMainContent();
-            } else {
-                showLogin();
-            }
-        }
+    function mkThumb(file){return new Promise(r=>{const v=document.createElement('video');v.preload='metadata';v.muted=1;v.src=URL.createObjectURL(file);v.onloadeddata=()=>{v.currentTime=Math.min(1,v.duration*.1)};v.onseeked=()=>{const c=document.createElement('canvas');c.width=320;c.height=180;c.getContext('2d').drawImage(v,0,0,320,180);const t=c.toDataURL('image/jpeg',.7);URL.revokeObjectURL(v.src);r(t)};v.onerror=()=>{URL.revokeObjectURL(v.src);r(null)};setTimeout(()=>{URL.revokeObjectURL(v.src);r(null)},5000)})}
+    function mkDur(file){return new Promise(r=>{const v=document.createElement('video');v.preload='metadata';v.src=URL.createObjectURL(file);v.onloadedmetadata=()=>{URL.revokeObjectURL(v.src);r(v.duration)};v.onerror=()=>{URL.revokeObjectURL(v.src);r(0)}})}
 
-        // 显示登录界面
-        function showLogin() {
-            document.getElementById('loginSection').classList.remove('hidden');
-            document.getElementById('registerSection').classList.add('hidden');
-            document.getElementById('mainContent').classList.add('hidden');
-        }
+    function openUpload(){document.getElementById('uploadModal').classList.add('show');selFile=null;document.getElementById('fName').style.display='none';document.getElementById('vTitle').value='';document.getElementById('vDesc').value='';document.getElementById('prog').style.display='none'}
+    function closeUpload(){document.getElementById('uploadModal').classList.remove('show')}
+    function onFile(inp){const f=inp.files[0];if(!f)return;if(!f.type.startsWith('video/')){toast('请选择视频文件','e');return}selFile=f;const n=document.getElementById('fName');n.style.display='block';n.textContent='📹 '+f.name+' ('+fmtSz(f.size)+')';if(!document.getElementById('vTitle').value)document.getElementById('vTitle').value=f.name.replace(/\.[^/.]+$/,'')}
 
-        // 显示注册界面
-        function showRegister() {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('registerSection').classList.remove('hidden');
-            document.getElementById('mainContent').classList.add('hidden');
-        }
+    async function doUpload(){
+        if(!selFile){toast('请先选择视频','e');return}
+        const title=document.getElementById('vTitle').value.trim();
+        if(!title){toast('请输入标题','e');return}
+        const p=document.getElementById('prog'),pf=document.getElementById('progFill'),pt=document.getElementById('progTxt');
+        p.style.display='block';
+        try{
+            pt.textContent='生成缩略图...';pf.style.width='20%';const thumb=await mkThumb(selFile);
+            pt.textContent='获取信息...';pf.style.width='40%';const dur=await mkDur(selFile);
+            pt.textContent='读取数据...';pf.style.width='60%';const buf=await selFile.arrayBuffer();
+            pt.textContent='保存中...';pf.style.width='80%';
+            await dbPut({id:gid(),title,description:document.getElementById('vDesc').value.trim(),category:document.getElementById('vCat').value,fileName:selFile.name,fileSize:selFile.size,fileType:selFile.type,duration:dur,thumbnail:thumb,data:buf,views:0,likes:0,uploadDate:new Date().toISOString()});
+            pf.style.width='100%';pt.textContent='完成！';toast('发布成功');closeUpload();loadVids();
+        }catch(e){toast('上传失败','e');p.style.display='none'}
+    }
 
-        // 显示主内容
-        function showMainContent() {
-            document.getElementById('loginSection').classList.add('hidden');
-            document.getElementById('registerSection').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
-            displayUserInfo();
-        }
+    async function loadVids(){vids=await dbAll();vids.sort((a,b)=>new Date(b.uploadDate)-new Date(a.uploadDate));render()}
+    function render(){
+        let f=vids;
+        if(curCat)f=f.filter(v=>v.category===curCat);
+        if(curSearch){const q=curSearch.toLowerCase();f=f.filter(v=>v.title.toLowerCase().includes(q)||(v.description&&v.description.toLowerCase().includes(q)))}
+        const list=document.getElementById('videoList'),empty=document.getElementById('emptyBox');
+        if(!f.length){list.innerHTML='';empty.style.display='block';return}
+        empty.style.display='none';
+        list.innerHTML=f.map(v=>`<div class="video-item" onclick="playV('${v.id}')"><div class="thumb">${v.thumbnail?'<img src="'+v.thumbnail+'">':'<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a1a;font-size:40px">🎬</div>'}<span class="dur">${fmtDur(v.duration)}</span><span class="play-btn">▶</span></div><div class="v-info"><div class="v-title">${v.title}</div><div class="v-meta"><span>👁${v.views||0}</span><span>👍${v.likes||0}</span><span>${fmtDate(v.uploadDate)}</span></div></div></div>`).join('')
+    }
 
-        // 显示消息
-        function showMessage(elementId, message, type = 'success') {
-            const messageElement = document.getElementById(elementId);
-            messageElement.innerHTML = `<div class="${type}-message">${message}</div>`;
-            setTimeout(() => {
-                messageElement.innerHTML = '';
-            }, 3000);
-        }
+    function filterCat(c){curCat=c;document.querySelectorAll('.cat').forEach(x=>x.classList.toggle('active',x.textContent.includes(c)||(!c&&x.textContent==='全部')));render()}
+    function doSearch(){curSearch=document.getElementById('sInput').value.trim();render()}
 
-        // 登录处理
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+    async function playV(id){
+        const v=vids.find(x=>x.id===id);if(!v)return;curId=id;v.views=(v.views||0)+1;await dbPut(v);
+        const url=URL.createObjectURL(new Blob([v.data],{type:v.fileType}));
+        const p=document.getElementById('mPlayer');p.src=url;p.load();
+        document.getElementById('pTitle').textContent=v.title;
+        document.getElementById('pViews').textContent=v.views+' 次播放';
+        document.getElementById('pDate').textContent=fmtDate(v.uploadDate);
+        document.getElementById('pCat').textContent=catIcon(v.category)+' '+v.category;
+        document.getElementById('pSize').textContent=fmtSz(v.fileSize);
+        document.getElementById('pDesc').textContent=v.description||'暂无描述';
+        document.getElementById('playerPage').classList.add('show');
+        try{await p.play()}catch(e){}
+    }
+    function closePlayer(){document.getElementById('playerPage').classList.remove('show');const p=document.getElementById('mPlayer');p.pause();if(p.src)URL.revokeObjectURL(p.src);p.src='';curId=null}
 
-            if (email && password) {
-                const user = {
-                    id: 1,
-                    username: email.split('@')[0],
-                    email: email,
-                    avatar: 'https://via.placeholder.com/100x100?text=用户头像',
-                    registerDate: new Date().toLocaleDateString('zh-CN')
-                };
-                
-                currentUser = user;
-                localStorage.setItem('userToken', 'demo-token-' + Date.now());
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                
-                showMessage('authMessage', '登录成功！正在跳转...');
-                setTimeout(() => {
-                    showMainContent();
-                }, 1000);
-            } else {
-                showMessage('authMessage', '请填写完整的登录信息', 'error');
-            }
-        });
+    async function likeVideo(){if(!curId)return;const v=vids.find(x=>x.id===curId);if(!v)return;v.likes=(v.likes||0)+1;await dbPut(v);toast('已点赞');loadVids()}
+    function dlVideo(){if(!curId)return;const v=vids.find(x=>x.id===curId);if(!v)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([v.data],{type:v.fileType}));a.download=v.fileName||'video.mp4';a.click();toast('下载中')}
+    async function delVideo(){if(!curId)return;if(!confirm('确定删除？'))return;await dbDel(curId);toast('已删除');closePlayer();loadVids()}
+    async function clearAll(){if(!vids.length)return;if(!confirm('删除全部 '+vids.length+' 个视频？'))return;await dbClr();toast('已清空');loadVids()}
 
-        // 注册处理
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('regUsername').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-
-            if (password !== confirmPassword) {
-                showMessage('registerMessage', '两次输入的密码不一致', 'error');
-                return;
-            }
-
-            if (username && email && password) {
-                const user = {
-                    id: Date.now(),
-                    username: username,
-                    email: email,
-                    avatar: 'https://via.placeholder.com/100x100?text=用户头像',
-                    registerDate: new Date().toLocaleDateString('zh-CN')
-                };
-                
-                currentUser = user;
-                localStorage.setItem('userToken', 'demo-token-' + Date.now());
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                
-                showMessage('registerMessage', '注册成功！正在跳转...');
-                setTimeout(() => {
-                    showMainContent();
-                }, 1000);
-            } else {
-                showMessage('registerMessage', '请填写完整的注册信息', 'error');
-            }
-        });
-
-        // 显示不同的部分
-        function showSection(section) {
-            const sections = ['homeSection', 'uploadSection', 'searchSection', 'profileSection'];
-            sections.forEach(s => {
-                document.getElementById(s).classList.add('hidden');
-            });
-            document.getElementById(section + 'Section').classList.remove('hidden');
-
-            // 更新导航按钮状态
-            const navButtons = document.querySelectorAll('.nav button');
-            navButtons.forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-        }
-
-        // 显示视频列表
-        function displayVideos() {
-            const videoGrid = document.getElementById('videoGrid');
-            videoGrid.innerHTML = '';
-
-            allVideos.forEach(video => {
-                const videoCard = createVideoCard(video);
-                videoGrid.appendChild(videoCard);
-            });
-        }
-
-        // 创建视频卡片
-        function createVideoCard(video) {
-            const card = document.createElement('div');
-            card.className = 'video-card';
-            card.innerHTML = `
-                <div class="video-thumbnail">
-                    <span>▶</span>
-                    <div class="video-duration">${formatDuration(video.duration)}</div>
-                </div>
-                <div class="video-info">
-                    <div class="video-title">${video.title}</div>
-                    <div class="video-description">${video.description}</div>
-                    <div class="video-meta">
-                        <span>${video.category}</span>
-                        <div class="video-stats">
-                            <span>👁 ${video.views.toLocaleString()}</span>
-                            <span>👍 ${video.likes}</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            card.addEventListener('click', () => {
-                alert(`正在播放: ${video.title}\n\n这是一个演示版本，实际的视频播放功能需要后端支持。`);
-            });
-            
-            return card;
-        }
-
-        // 格式化时长
-        function formatDuration(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-        }
-
-        // 搜索视频
-        function searchVideos() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const searchResults = document.getElementById('searchResults');
-            
-            if (!searchTerm) {
-                searchResults.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">请输入搜索关键词</p>';
-                return;
-            }
-
-            const filteredVideos = allVideos.filter(video => 
-                video.title.toLowerCase().includes(searchTerm) ||
-                video.description.toLowerCase().includes(searchTerm) ||
-                video.category.toLowerCase().includes(searchTerm)
-            );
-
-            searchResults.innerHTML = '';
-
-            if (filteredVideos.length === 0) {
-                searchResults.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">没有找到相关视频</p>';
-            } else {
-                filteredVideos.forEach(video => {
-                    const videoCard = createVideoCard(video);
-                    searchResults.appendChild(videoCard);
-                });
-            }
-        }
-
-        // 显示用户信息
-        function displayUserInfo() {
-            const userInfo = document.getElementById('userInfo');
-            if (currentUser) {
-                userInfo.innerHTML = `
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <img src="${currentUser.avatar}" alt="用户头像" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px;">
-                        <h3>${currentUser.username}</h3>
-                        <p>${currentUser.email}</p>
-                        <p>注册时间: ${currentUser.registerDate}</p>
-                    </div>
-                    <div class="profile-stats">
-                        <div class="stat-card">
-                            <h4>观看记录</h4>
-                            <p>${Math.floor(Math.random() * 100) + 50}</p>
-                        </div>
-                        <div class="stat-card">
-                            <h4>收藏视频</h4>
-                            <p>${Math.floor(Math.random() * 50) + 10}</p>
-                        </div>
-                        <div class="stat-card">
-                            <h4>点赞数</h4>
-                            <p>${Math.floor(Math.random() * 200) + 50}</p>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        // 退出登录
-        function logout() {
-            localStorage.removeItem('userToken');
-            localStorage.removeItem('currentUser');
-            currentUser = null;
-            showLogin();
-        }
-
-        // 上传视频处理
-        document.getElementById('uploadForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const title = document.getElementById('videoTitle').value;
-            const description = document.getElementById('videoDescription').value;
-            const category = document.getElementById('videoCategory').value;
-            const videoFile = document.getElementById('videoFile').value;
-
-            if (title && description && category && videoFile) {
-                const newVideo = {
-                    id: allVideos.length + 1,
-                    title: title,
-                    description: description,
-                    category: category,
-                    duration: Math.floor(Math.random() * 3600) + 300,
-                    views: 0,
-                    likes: 0,
-                    thumbnail: "https://via.placeholder.com/300x200?text=新视频"
-                };
-
-                allVideos.unshift(newVideo);
-                displayVideos();
-                
-                alert('视频上传成功！（这是一个演示版本，实际文件需要后端处理）');
-                document.getElementById('uploadForm').reset();
-            } else {
-                alert('请填写完整的视频信息');
-            }
-        });
+    (async()=>{await openDB();await loadVids()})();
     </script>
 </body>
 </html>
