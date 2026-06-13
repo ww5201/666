@@ -1,0 +1,42 @@
+[build]
+  base = "video-website"
+  publish = "video-website"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# 首页重定向
+[[redirects]]
+  from = "/"
+  to = "/demo.html"
+  status = 200
+
+# 移动版页面
+[[redirects]]
+  from = "/mobile"
+  to = "/demo-mobile.html"
+  status = 200
+
+# 后端管理界面
+[[redirects]]
+  from = "/admin"
+  to = "/admin-backend.html"
+  status = 200
+
+# 后端测试页面
+[[redirects]]
+  from = "/test"
+  to = "/backend-test.html"
+  status = 200
+
+# API文档
+[[redirects]]
+  from = "/docs"
+  to = "/api-documentation.html"
+  status = 200
+
+# SPA fallback - 所有未匹配的路由重定向到首页
+[[redirects]]
+  from = "/*"
+  to = "/demo.html"
+  status = 200
