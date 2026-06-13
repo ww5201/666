@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Pages + Netlify 部署指南</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .step {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .step h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .step-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .step-info {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .step-code {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .benefit-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .benefit-card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .benefit-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .cta-section h2 {
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+        
+        .cta-section p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+        
+        .deploy-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .deploy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .faq {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .faq h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px 0;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .step-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 GitHub Pages + Netlify 部署指南</h1>
+            <p>让您的视频网站在线运行，免费又简单！</p>
+        </div>
+        
+        <div class="benefits">
+            <div class="benefit-card">
+                <div class="icon">💰</div>
+                <h4>完全免费</h4>
+                <p>无需支付任何费用，享受专业级服务</p>
+            </div>
+            <div class="benefit-card">
+                <div class="icon">🚀</div>
+                <h4>全球CDN</h4>
+                <p>访问速度快，用户体验好</p>
+            </div>
+            <div class="benefit-card">
+                <div class="icon">🔒</div>
+                <h4>自动HTTPS</h4>
+                <p>安全加密，无需配置</p>
+            </div>
+            <div class="benefit-card">
+                <div class="icon">🔄</div>
+                <h4>自动部署</h4>
+                <p>代码推送后自动更新</p>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>🚀 完整部署步骤</h2>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%" id="progressBar"></div>
+            </div>
+            
+            <div class="step">
+                <h3>步骤 1：准备工作</h3>
+                <div class="step-content">
+                    <div class="step-info">
+                        <h4>安装必要软件</h4>
+                        <ul>
+                            <li>Git：https://git-scm.com/download/win</li>
+                            <li>Node.js：https://nodejs.org/</li>
+                            <li>验证安装：git --version</li>
+                        </ul>
+                    </div>
+                    <div class="step-code">
+                        git --version<br>
+                        node --version<br>
+                        npm --version
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>步骤 2：创建GitHub仓库</h3>
+                <div class="step-content">
+                    <div class="step-info">
+                        <h4>创建新仓库</h4>
+                        <ol>
+                            <li>访问 https://github.com</li>
+                            <li>点击 "+" → "New repository"</li>
+                            <li>填写仓库名称：video-website</li>
+                            <li>选择 "Public"（免费）</li>
+                            <li>不要添加README、.gitignore、license</li>
+                            <li>点击 "Create repository"</li>
+                        </ol>
+                    </div>
+                    <div class="step-code">
+                        # 复制仓库地址<br>
+                        https://github.com/yourname/video-website.git
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>步骤 3：初始化Git仓库</h3>
+                <div class="step-content">
+                    <div class="step-info">
+                        <h4>配置Git并初始化</h4>
+                        <ul>
+                            <li>进入项目目录</li>
+                            <li>初始化Git仓库</li>
+                            <li>添加远程仓库</li>
+                            <li>配置用户信息</li>
+                        </ul>
+                    </div>
+                    <div class="step-code">
+                        cd D:\\666\\video-website<br>
+                        git init<br>
+                        git config --global user.name "Your Name"<br>
+                        git config --global user.email "your.email@example.com"<br>
+                        git remote add origin https://github.com/yourname/video-website.git
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>步骤 4：提交和推送代码</h3>
+                <div class="step-content">
+                    <div class="step-info">
+                        <h4>推送代码到GitHub</h4>
+                        <ul>
+                            <li>添加所有文件</li>
+                            <li>提交代码</li>
+                            <li>推送到GitHub</li>
+                        </ul>
+                    </div>
+                    <div class="step-code">
+                        git add .<br>
+                        git commit -m "Initial commit: Video website deployment"<br>
+                        git push -u origin main
+                    </div>
+                </div>
+            </div>
+            
+            <div class="step">
+                <h3>步骤 5：连接到Netlify</h3>
+                <div class="step-content">
+                    <div class="step-info">
+                        <h4>配置Netlify部署</h4>
+                        <ol>
+                            <li>访问 https://netlify.com</li>
+                            <li>点击 "New site from Git"</li>
+                            <li>选择GitHub仓库</li>
+                            <li>授权Netlify访问GitHub</li>
+                            <li>点击 "Deploy site"</li>
+                            <li>等待部署完成</li>
+                        </ol>
+                    </div>
+                    <div class="step-code">
+                        # Netlify会自动检测项目类型<br>
+                        # 无需额外配置<br>
+                        # 部署完成后获得免费域名
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta-section">
+            <h2>🎉 部署成功！</h2>
+            <p>恭喜！您的视频网站现在已经在线运行了！</p>
+            <a href="https://netlify.com" target="_blank" class="deploy-btn">立即开始部署</a>
+        </div>
+        
+        <div class="content">
+            <h2>📋 常见问题解决</h2>
+            
+            <div class="faq">
+                <h4>问题：部署失败</h4>
+                <p>可能原因：仓库为空、文件路径错误、依赖问题</p>
+                <p>解决方案：确保所有文件都在根目录，检查文件权限，查看Netlify构建日志</p>
+            </div>
+            
+            <div class="faq">
+                <h4>问题：样式丢失</h4>
+                <p>可能原因：CSS文件路径错误、相对路径问题</p>
+                <p>解决方案：使用绝对路径或CDN链接，检查CSS文件引用路径</p>
+            </div>
+            
+            <div class="faq">
+                <h4>问题：图片不显示</h4>
+                <p>可能原因：图片路径错误、图片权限问题</p>
+                <p>解决方案：将图片上传到GitHub或CDN，使用正确的图片路径</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>🎬 让您的视频网站在线运行，免费又简单！</p>
+        </div>
+    </div>
+    
+    <script>
+        // 进度条动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBar = document.getElementById('progressBar');
+            let progress = 0;
+            
+            const interval = setInterval(() => {
+                progress += 20;
+                progressBar.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                }
+            }, 500);
+            
+            // 步骤点击交互
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((step, index) => {
+                step.addEventListener('click', function() {
+                    this.style.background = this.style.background === 'white' ? '#f8f9fa' : 'white';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

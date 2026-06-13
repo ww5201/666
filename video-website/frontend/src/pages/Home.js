@@ -116,7 +116,7 @@ const Home = () => {
         <div style={{ textAlign: 'center', padding: '50px' }}>
           <Spin size="large" />
         </div>
-      ) : videos.length === 0 ? (
+      ) : videoList.length === 0 ? (
         <Empty
           description="暂无视频"
           style={{ margin: '50px 0' }}
