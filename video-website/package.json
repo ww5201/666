@@ -1,0 +1,30 @@
+{
+  "name": "video-website",
+  "version": "1.0.0",
+  "description": "类似腾讯视频、哔哩哔哩的视频网站项目",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\"",
+    "dev:frontend": "cd frontend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:backend:simple": "cd backend && node server-simple.js",
+    "dev:backend:test": "cd backend && node server-test.js",
+    "install:all": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "video-website",
+    "react",
+    "nodejs",
+    "express",
+    "mongodb",
+    "video-player"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
