@@ -465,7 +465,9 @@
     function handleFileSelect(input) {
         const file = input.files[0];
         if (!file) return;
-        if (!file.type.startsWith('video/')) { showToast('请选择视频文件', 'error'); return; }
+        if (!file.type.startsWith('video/')) { showToast('请选择视频文件（MP4/WebM/OGG）', 'error'); return; }
+        // 500MB 限制
+        if (file.size > 500 * 1024 * 1024) { showToast('视频文件不能超过500MB', 'error'); input.value = ''; return; }
         selectedFile = file;
         const info = document.getElementById('fileInfo');
         info.style.display = 'block';
@@ -473,6 +475,7 @@
         if (!document.getElementById('videoTitle').value) {
             document.getElementById('videoTitle').value = file.name.replace(/\.[^/.]+$/, '');
         }
+        showToast('已选择: ' + file.name);
     }
 
     const uploadZone = document.getElementById('uploadZone');
@@ -497,20 +500,26 @@
         const title = document.getElementById('videoTitle').value.trim();
         if (!title) { showToast('请输入视频标题', 'error'); return; }
 
+        const btn = document.querySelector('.modal .btn-primary');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '⏳ 处理中...'; btn.disabled = true;
+
         const pDiv = document.getElementById('uploadProgress');
         const pFill = document.getElementById('progressFill');
         const pText = document.getElementById('progressText');
         pDiv.style.display = 'block';
 
         try {
-            pText.textContent = '生成缩略图...'; pFill.style.width = '20%';
+            pText.textContent = '生成缩略图...'; pFill.style.width = '10%';
             const thumbnail = await generateThumbnail(selectedFile);
-            pText.textContent = '获取视频信息...'; pFill.style.width = '40%';
-            const duration = await getVideoDuration(selectedFile);
-            pText.textContent = '读取视频数据...'; pFill.style.width = '60%';
-            const arrayBuffer = await selectedFile.arrayBuffer();
-            pText.textContent = '保存视频...'; pFill.style.width = '80%';
 
+            pText.textContent = '获取视频时长...'; pFill.style.width = '25%';
+            const duration = await getVideoDuration(selectedFile);
+
+            pText.textContent = '读取视频数据（' + formatSize(selectedFile.size) + '）...'; pFill.style.width = '40%';
+            const arrayBuffer = await selectedFile.arrayBuffer();
+
+            pText.textContent = '写入本地数据库...'; pFill.style.width = '70%';
             const video = {
                 id: generateId(), title: title,
                 description: document.getElementById('videoDesc').value.trim(),
@@ -521,11 +530,22 @@
                 views: 0, likes: 0, uploadDate: new Date().toISOString()
             };
             await dbPut(video);
-            pFill.style.width = '100%'; pText.textContent = '上传成功！';
-            showToast('视频发布成功！'); closeUpload(); loadVideos();
+
+            pFill.style.width = '100%'; pText.textContent = '✅ 发布成功！';
+            showToast('🎉 视频发布成功！');
+            setTimeout(() => { closeUpload(); loadVideos(); }, 800);
         } catch (err) {
-            showToast('上传失败: ' + err.message, 'error');
+            console.error('Upload error:', err);
+            let msg = '上传失败';
+            if (err.name === 'QuotaExceededError') {
+                msg = '存储空间不足，请删除一些视频后重试';
+            } else if (err.message) {
+                msg = '上传失败: ' + err.message;
+            }
+            showToast(msg, 'error');
             pDiv.style.display = 'none';
+        } finally {
+            btn.innerHTML = origText; btn.disabled = false;
         }
     }
 

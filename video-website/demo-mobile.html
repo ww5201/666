@@ -186,22 +186,29 @@
 
     function openUpload(){document.getElementById('uploadModal').classList.add('show');selFile=null;document.getElementById('fName').style.display='none';document.getElementById('vTitle').value='';document.getElementById('vDesc').value='';document.getElementById('prog').style.display='none'}
     function closeUpload(){document.getElementById('uploadModal').classList.remove('show')}
-    function onFile(inp){const f=inp.files[0];if(!f)return;if(!f.type.startsWith('video/')){toast('请选择视频文件','e');return}selFile=f;const n=document.getElementById('fName');n.style.display='block';n.textContent='📹 '+f.name+' ('+fmtSz(f.size)+')';if(!document.getElementById('vTitle').value)document.getElementById('vTitle').value=f.name.replace(/\.[^/.]+$/,'')}
+    function onFile(inp){const f=inp.files[0];if(!f)return;if(!f.type.startsWith('video/')){toast('请选择视频文件','e');inp.value='';return}if(f.size>500*1024*1024){toast('视频不能超过500MB','e');inp.value='';return}selFile=f;const n=document.getElementById('fName');n.style.display='block';n.textContent='📹 '+f.name+' ('+fmtSz(f.size)+')';if(!document.getElementById('vTitle').value)document.getElementById('vTitle').value=f.name.replace(/\.[^/.]+$/,'');toast('已选择: '+f.name)}
 
     async function doUpload(){
         if(!selFile){toast('请先选择视频','e');return}
         const title=document.getElementById('vTitle').value.trim();
         if(!title){toast('请输入标题','e');return}
+        const btn=document.querySelector('.submit-btn');const orig=btn.textContent;btn.textContent='⏳ 处理中...';btn.disabled=true;
         const p=document.getElementById('prog'),pf=document.getElementById('progFill'),pt=document.getElementById('progTxt');
         p.style.display='block';
         try{
-            pt.textContent='生成缩略图...';pf.style.width='20%';const thumb=await mkThumb(selFile);
-            pt.textContent='获取信息...';pf.style.width='40%';const dur=await mkDur(selFile);
-            pt.textContent='读取数据...';pf.style.width='60%';const buf=await selFile.arrayBuffer();
-            pt.textContent='保存中...';pf.style.width='80%';
+            pt.textContent='生成缩略图...';pf.style.width='10%';const thumb=await mkThumb(selFile);
+            pt.textContent='获取时长...';pf.style.width='25%';const dur=await mkDur(selFile);
+            pt.textContent='读取数据（'+fmtSz(selFile.size)+'）...';pf.style.width='40%';const buf=await selFile.arrayBuffer();
+            pt.textContent='写入数据库...';pf.style.width='70%';
             await dbPut({id:gid(),title,description:document.getElementById('vDesc').value.trim(),category:document.getElementById('vCat').value,fileName:selFile.name,fileSize:selFile.size,fileType:selFile.type,duration:dur,thumbnail:thumb,data:buf,views:0,likes:0,uploadDate:new Date().toISOString()});
-            pf.style.width='100%';pt.textContent='完成！';toast('发布成功');closeUpload();loadVids();
-        }catch(e){toast('上传失败','e');p.style.display='none'}
+            pf.style.width='100%';pt.textContent='✅ 发布成功！';toast('🎉 发布成功');
+            setTimeout(()=>{closeUpload();loadVids()},800);
+        }catch(e){
+            console.error('Upload error:',e);
+            if(e.name==='QuotaExceededError'){toast('存储空间不足，请删除一些视频','e')}
+            else{toast('上传失败: '+(e.message||''),'e')}
+            p.style.display='none';
+        }finally{btn.textContent=orig;btn.disabled=false}
     }
 
     async function loadVids(){vids=await dbAll();vids.sort((a,b)=>new Date(b.uploadDate)-new Date(a.uploadDate));render()}
