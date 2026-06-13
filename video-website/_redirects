@@ -1,0 +1,13 @@
+/* Netlify 重定向配置 */
+/* 将所有请求重定向到正确的页面 */
+
+/* 单页应用重定向 - 如果需要 */
+/* /*    /index.html   200 */
+
+/* 特定页面重定向 */
+/demo-mobile.html    /demo-mobile.html   200
+/test.html          /test.html         200
+/404.html           /404.html          200
+
+/* 默认重定向到主页 */
+/                   /demo.html         200
